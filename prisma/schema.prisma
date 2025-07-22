@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model bcl {
+  id           Int      @id @default(autoincrement())
+  teamId       Int
+  status       String
+  registeredAt DateTime @default(now())
+  team         team     @relation(fields: [teamId], references: [id], map: "BCL_teamId_fkey")
+
+  @@index([teamId], map: "BCL_teamId_fkey")
+}
+
+model chambers {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  status   String
+  joinedAt DateTime @default(now())
+  user     user     @relation(fields: [userId], references: [id], map: "Chambers_userId_fkey")
+
+  @@index([userId], map: "Chambers_userId_fkey")
+}
+
+model companyvisit {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  visited   Boolean   @default(false)
+  visitedAt DateTime?
+  user      user      @relation(fields: [userId], references: [id], map: "CompanyVisit_userId_fkey")
+
+  @@index([userId], map: "CompanyVisit_userId_fkey")
+}
+
+model ibc {
+  id           Int      @id @default(autoincrement())
+  teamId       Int
+  status       String
+  registeredAt DateTime @default(now())
+  team         team     @relation(fields: [teamId], references: [id], map: "IBC_teamId_fkey")
+
+  @@index([teamId], map: "IBC_teamId_fkey")
+}
+
+model ic {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  ticketCode String   @unique(map: "IC_ticketCode_key")
+  issuedAt   DateTime @default(now())
+  user       user     @relation(fields: [userId], references: [id], map: "IC_userId_fkey")
+
+  @@index([userId], map: "IC_userId_fkey")
+}
+
+model payment {
+  id     Int      @id @default(autoincrement())
+  userId Int
+  amount Float
+  method String
+  paidAt DateTime @default(now())
+  user   user     @relation(fields: [userId], references: [id], map: "Payment_userId_fkey")
+
+  @@index([userId], map: "Payment_userId_fkey")
+}
+
+model submission {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  type        String
+  filePath    String
+  submittedAt DateTime @default(now())
+  user        user     @relation(fields: [userId], references: [id], map: "Submission_userId_fkey")
+
+  @@index([userId], map: "Submission_userId_fkey")
+}
+
+model team {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique(map: "Team_name_key")
+  code      String   @unique(map: "Team_code_key")
+  createdAt DateTime @default(now())
+  bcl       bcl[]
+  ibc       ibc[]
+  user      user[]
+}
+
+model user {
+  id           Int            @id @default(autoincrement())
+  name         String
+  email        String         @unique(map: "User_email_key")
+  password     String
+  wa_number    String
+  line_id      String
+  role         String
+  campus       String?
+  major        String?
+  ktmPhoto     String?
+  institution  String?
+  teamId       Int?
+  createdAt    DateTime       @default(now())
+  chambers     chambers[]
+  companyvisit companyvisit[]
+  ic           ic[]
+  payment      payment[]
+  submission   submission[]
+  team         team?          @relation(fields: [teamId], references: [id], map: "User_teamId_fkey")
+
+  @@index([teamId], map: "User_teamId_fkey")
+}
