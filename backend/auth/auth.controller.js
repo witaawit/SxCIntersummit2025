@@ -1,8 +1,16 @@
-const { findUserByEmail, createUser } = require("./auth.service");
+const { findUserByEmail, createUser, createTempUser, findTempEmail, sendOtpEmail, incrementAttempt, deleteTempUser, updateTempUser, findStaffByEmail } = require("./auth.service");
 const { hashPassword, comparePassword } = require("../utils/hash");
 const jwt = require("jsonwebtoken");
 const { secret, expiresIn } = require("../config/jwt");
 const MSG = require("../constants/messages");
+const prisma = require("../config/db");
+
+
+
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}; // Generates a 6-digit OTP
+
 
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -11,24 +19,109 @@ exports.register = async (req, res) => {
   if (existingUser) return res.status(400).json({ message: MSG.EMAIL_EXISTS });
 
   const hashed = await hashPassword(password);
-  const user = await createUser({ name, email, password: hashed });
+  const OTP = generateOTP();
+  const user = await createTempUser({ name, email, password: hashed, otp: OTP }); // insert temp user dengan field name, email, password, dan otp
+  
+  const result = await sendOtpEmail(email, OTP);
+  if (!result.success) {
+    return res.status(500).json({ message: "Gagal mengirim OTP ke email" });
+  }
 
-  res.status(201).json({ message: MSG.REGISTER_SUCCESS, user });
+  res.status(201).json({
+    message: MSG.REGISTER_SUCCESS,
+    user,
+    note: "OTP terkirim ke email"
+  });
 };
+
+
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   const user = await findUserByEmail(email);
+  const staff = await findStaffByEmail(email);
 
-  if (!user) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
+  if (!user && !staff) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
 
-  const valid = await comparePassword(password, user.password);
+  const valid = await comparePassword(password, user?.password || staff?.password);
   if (!valid) return res.status(401).json({ message: MSG.INVALID_PASSWORD });
 
-  const token = jwt.sign({ id: user.id }, secret, { expiresIn });
+  let id, role, accountType, division = null;
+  if (staff) {
+    ({ id, role, division } = staff);
+    accountType = 'staff';
+  }else {
+   ({ id, role } = user);
+    accountType = 'user';
+    division = null;
+  }
+  const token = jwt.sign({ id, role, accountType, division }, secret, { expiresIn });
   res.json({ message: MSG.LOGIN_SUCCESS, token });
   try {
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+exports.verifyOTP = async (req, res) => {
+  const { email, otp } = req.body;
+  const tempUser = await findTempEmail(email);
+
+  if (!tempUser) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
+
+  if (tempUser.otp !== otp) {
+    await incrementAttempt(email);
+
+    if (tempUser.otpTries + 1 >= 3) {
+      await deleteTempUser(email);
+      return res.status(400).json({ message: 'OTP salah 3 kali. Data registrasi dihapus.' });
+    }
+
+    return res.status(400).json({
+      message: MSG.OTP_INVALID,
+      attemptsLeft: 3 - (tempUser.otpTries + 1)
+    });
+  }
+
+  const otpAge = Date.now() - new Date(tempUser.otpSentAt).getTime();
+  if (otpAge > 1 * 60 * 1000) { // 1 menit
+    return res.status(400).json({ message: MSG.OTP_EXPIRED });
+  }
+
+  const user = await createUser({
+    name: tempUser.name,
+    email: tempUser.email,
+    password: tempUser.password
+  });
+  res.status(201).json({ message: MSG.OTP_VERIFIED, user });
+  await deleteTempUser(email);
+};
+
+exports.sendNewOtp = async (req, res) => {
+  const { email } = req.body;
+  const tempUser = await findTempEmail(email);
+
+  if (!tempUser) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
+
+  const newOtp = generateOTP();
+  await updateTempUser(email, { otp: newOtp, otpTries: 0, otpSentAt: new Date() });
+
+  const result = await sendOtpEmail(email, newOtp);
+  if (!result.success) {
+    return res.status(500).json({ message: "Gagal mengirim OTP ke email" });
+  }
+
+  res.status(200).json({ message: "OTP baru telah dikirim ke email Anda" });
+};
+
+
+exports.getTokenData = (req, res) => {
+  // req.user diisi dari middleware setelah verifikasi JWT
+  const { id, role, accountType, division } = req.user;
+
+  res.status(200).json({
+    message: 'Data user dari token JWT',
+    user: { id, role, accountType, division }
+  });
+}

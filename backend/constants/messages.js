@@ -14,6 +14,11 @@ module.exports = {
   PROFILE_FETCHED: 'Data profil berhasil diambil',
   PROFILE_UPDATED: 'Profil berhasil diperbarui',
 
+  OTP_SENT: 'OTP telah dikirim',
+  OTP_VERIFIED: 'OTP berhasil diverifikasi',
+  OTP_INVALID: 'OTP tidak valid',
+  OTP_EXPIRED: 'OTP sudah kedaluwarsa',
+
   SUBMIT_SUCCESS: 'Berhasil submit dokumen',
   SUBMIT_FAILED: 'Gagal submit, coba lagi',
 

@@ -17,6 +17,31 @@ const authenticate = (req, res, next) => {
   }
 };
 
+// Middleware otorisasi berdasarkan role
+const authorizeRoles = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Forbidden: Role not allowed" });
+    }
+    next();
+  };
+};
+
+// Middleware otorisasi berdasarkan divisi (opsional untuk ADMIN)
+const authorizeDivisions = (...allowedDivisions) => {
+  return (req, res, next) => {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden: Admins only" });
+    }
+
+    if (!allowedDivisions.includes(req.user.division)) {
+      return res.status(403).json({ message: `Forbidden: Only for divisions: ${allowedDivisions.join(", ")}` });
+    }
+
+    next();
+  };
+};
+
 const isAdmin = (req, res, next) => {
   if (req.user.role !== "ADMIN") {
     return res.status(403).json({ message: "Forbidden: Admins only" });
@@ -27,4 +52,6 @@ const isAdmin = (req, res, next) => {
 module.exports = {
   authenticate,
   isAdmin,
+  authorizeRoles,
+  authorizeDivisions
 };

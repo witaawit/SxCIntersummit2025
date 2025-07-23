@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('./auth.controller');
 const { body } = require('express-validator');
+const { authenticate, isAdmin } = require('../middlewares/auth.middleware');
 const validate = require('../middlewares/validation.middleware');
 
 router.post('/register', [
@@ -14,5 +15,19 @@ router.post('/login', [
   body('email').isEmail().withMessage('Invalid email'),
   body('password').notEmpty().withMessage('Password must be filled in')
 ], validate, authController.login);
+
+router.post('/verifyOtp', [
+  body('email').isEmail().withMessage('Invalid email'),
+  body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be 6 digits')
+], validate, authController.verifyOTP);
+
+
+router.post('/sendnewOTP', [
+  body('email').isEmail().withMessage('Invalid email')
+], validate, authController.sendNewOtp);
+
+router.get('/me',[
+  authenticate
+], authController.getTokenData);
 
 module.exports = router;
