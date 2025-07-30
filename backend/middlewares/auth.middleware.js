@@ -17,14 +17,4 @@ const authenticate = (req, res, next) => {
   }
 };
 
-const isAdmin = (req, res, next) => {
-  if (req.user.role !== "ADMIN") {
-    return res.status(403).json({ message: "Forbidden: Admins only" });
-  }
-  next();
-};
-
-module.exports = {
-  authenticate,
-  isAdmin,
-};
+module.exports = { authenticate };

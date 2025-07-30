@@ -1,26 +1,36 @@
 {
-  "name": "backend",
+  "name": "sxcintersummit2025",
   "version": "1.0.0",
+  "type": "commonjs",
+  "private": true,
+  "quiet": true,
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon backend/server.js",
+    "generate": "prisma generate --schema=prisma/schema.prisma"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
     "@prisma/client": "^6.12.0",
-    "@types/bcrypt": "^6.0.0",
-    "@types/node": "^24.0.15",
-    "bcrypt": "^6.0.0",
-    "bcryptjs": "^2.x",
+    "@supabase/supabase-js": "^2.52.1",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.x",
-    "express": "^4.x",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "googleapis": "^154.0.0",
     "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.x",
-    "ts-node": "^10.9.2"
+    "jsonwebtoken": "^9.0.2",
+    "mime-types": "^3.0.1",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.5"
   },
   "devDependencies": {
-    "nodemon": "^2.x",
+    "nodemon": "^3.1.10",
     "prisma": "^6.12.0"
   }
 }
