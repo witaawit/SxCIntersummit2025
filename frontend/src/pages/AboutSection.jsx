@@ -1,5 +1,5 @@
 import React from "react";
-import { CardInfoSection } from "../components/CardInfoSection";
+import { AmbassadorsSection } from "../components/AmbassadorsSection";
 import { ChallengesSection } from "../components/ChallengesSection";
 import { ComponentHeaderSection } from "../components/ComponentHeaderSection";
 
@@ -11,7 +11,7 @@ import { ValueSection } from '../components/ValueSection';
 import { OurMissionsSection } from "../components/OurMissionsSection";
 import { ParticipantSection } from "../components/ParticipantSection";
 
-import { TestimonialsSection } from "../components/TestimonialsSection";
+
 //import { VisionSection } from "../components/VisionSection";
 import TaglineSection from '../components/TaglineSection';
 import { Info } from "lucide-react";
@@ -88,25 +88,20 @@ export const AboutSection = () => {
 
           <div className="absolute w-[1440px] h-[2845px] top-[5852px] left-[158px] bg-[linear-gradient(180deg,rgba(135,105,178,1)_4%,rgba(161,222,244,1)_32%,rgba(119,56,177,1)_100%)]" />
 
-          <ValueSection />
-          <img
-            className="absolute w-[1436px] h-1.5 top-0 left-40"
-            alt="Line"
-            src="/images/line-2.svg"
-          />
+          
 
-          <div className="inline-flex items-center justify-center gap-2.5 p-2.5 absolute top-[4404px] left-[793px]">
-            <h2 className="relative w-fit mt-[-1.00px] font-h1 font-[number:var(--h1-font-weight)] text-white text-[length:var(--h1-font-size)] tracking-[var(--h1-letter-spacing)] leading-[var(--h1-line-height)] whitespace-nowrap [font-style:var(--h1-font-style)]">
-              Focus
-            </h2>
-          </div>
+          
 
           <div className="inline-flex items-center justify-center gap-2.5 p-2.5 absolute top-[3228px] left-[729px]">
             <h2 className="relative w-fit mt-[-1.00px] [font-family:'Rubik-Medium',Helvetica] font-medium text-white text-[54px] tracking-[-1.08px] leading-[62px] whitespace-nowrap">
               Challenges
             </h2>
           </div>
-
+<div className="inline-flex items-center justify-center gap-2.5 p-2.5 absolute top-[4404px] left-[793px]">
+            <h2 className="relative w-fit mt-[-1.00px] font-h1 font-[number:var(--h1-font-weight)] text-white text-[length:var(--h1-font-size)] tracking-[var(--h1-letter-spacing)] leading-[var(--h1-line-height)] whitespace-nowrap [font-style:var(--h1-font-style)]">
+              Focus
+            </h2>
+          </div>
           <div className="absolute w-[392px] h-[82px] top-[5076px] left-[682px]">
             <div className="relative w-[372px] h-[62px] top-2.5 left-2.5">
               <h2 className="absolute -top-px left-0 text-white text-[54px] tracking-[-1.08px] leading-[62px] whitespace-nowrap [font-family:'Rubik-Medium',Helvetica] font-medium">
@@ -173,9 +168,8 @@ export const AboutSection = () => {
             </React.Fragment>
           ))}
 
-          <CardInfoSection />
           <ParticipantSection />
-          <TestimonialsSection />
+          
           <ComponentHeaderSection />
 
 
@@ -186,10 +180,18 @@ export const AboutSection = () => {
             alt="Line section"
             src="/images/line-section.svg"
           />
+          
           <TaglineSection />
           {/* <MissionDetailsSection /> */}
           {/* <VisionSection /> */}
-
+          <ValueSection />
+          
+          <img
+            className="absolute w-[1436px] h-1.5 top-0 left-40"
+            alt="Line"
+            src="/images/line-2.svg"
+          />
+          
 
 
 
@@ -231,8 +233,9 @@ export const AboutSection = () => {
         
           <HeaderSection />
 
-
+          <AmbassadorsSection />
         <FooterSection />
+        
       </div>
     </div>
   );
