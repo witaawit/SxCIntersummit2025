@@ -6,7 +6,7 @@ export const CardInfoSection = () => {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
     name: "Devon Miles",
     title: "Executive Engineer",
-    avatar: "/images/ellipse-4.png",  // Gambar avatar dari public/images
+    avatar: "/images/ellipse-6.svg",  // Gambar avatar dari public/images
   };
 
   return (

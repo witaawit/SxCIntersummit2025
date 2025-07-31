@@ -1,6 +1,6 @@
 import React from "react";
 
-export const MissionSection = () => {
+export const ValueSection = () => {
   const valuesData = [
     {
       title: "Passion",

@@ -18,7 +18,7 @@ export const ChallengesSection = () => {
       id: 2,
       title: "Lorem",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
+        "Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
       width: "317px",
       height: "277px",
       titleWidth: "313px",

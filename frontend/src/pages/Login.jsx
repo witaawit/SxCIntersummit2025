@@ -224,7 +224,7 @@ export const LoginPage = () => {
 
                 {/* Register Link */}
                 <p className="mt-6 text-center text-xs text-white">
-                  Belum punya akun?{" "}
+                  Don't have an account?{" "}
                   <button
                     type="button"
                     className="text-blue-800 underline hover:text-blue-600"

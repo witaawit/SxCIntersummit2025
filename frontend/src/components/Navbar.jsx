@@ -1,25 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Sembunyikan navbar di halaman login dan signup
-  if (['/login', '/signup', '/about'].includes(location.pathname)) {
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        // Scrolling down
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
+
+  // Return null early for specific routes
+  if (['/login', '/signup'].includes(location.pathname)) {
     return null;
   }
 
-  /* 
-    🔥 TIDAK ADA PERUBAHAN STYLE DI BAWAH INI 
-    Semua kode styling dipertahankan 100% sama persis
-  */
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-[#B1EA51] bg-opacity-30 border border-[#abdc57] rounded-full shadow-[0_0_8px_#abdc57] w-full max-w-[90%] mx-auto mt-6">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3 bg-[#B1EA51] bg-opacity-30 border border-[#abdc57] rounded-full shadow-[0_0_8px_#abdc57] w-full max-w-[90%] mx-auto mt-4 transition-all duration-300 ${
+        isVisible ? 'top-6' : '-top-20'
+      }`}
+    >
       {/* Left - Logo */}
       <div className="flex items-center space-x-2">
         <img src="images/logo-sxc-putih-2-2.png" alt="Logo" className="w-9 h-9" />

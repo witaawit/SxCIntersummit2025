@@ -2,16 +2,20 @@ import React from "react";
 import { CardInfoSection } from "../components/CardInfoSection";
 import { ChallengesSection } from "../components/ChallengesSection";
 import { ComponentHeaderSection } from "../components/ComponentHeaderSection";
-import { ComponentNodeSection } from "../components/ComponentNodeSection";
+
 import { FooterSection } from "../components/FooterSection";
 import { HeaderSection } from "../components/HeaderSection";
 import { InfoCardSection } from "../components/InfoCardSection";
-import { MissionDetailsSection } from "../components/MissionDetailsSection";
-import { MissionSection } from '../components/MissionSection';
+//import { MissionDetailsSection } from "../components/MissionDetailsSection";
+import { ValueSection } from '../components/ValueSection';
 import { OurMissionsSection } from "../components/OurMissionsSection";
 import { ParticipantSection } from "../components/ParticipantSection";
+
 import { TestimonialsSection } from "../components/TestimonialsSection";
-import { VisionSection } from "../components/VisionSection";
+//import { VisionSection } from "../components/VisionSection";
+import TaglineSection from '../components/TaglineSection';
+import { Info } from "lucide-react";
+
 
 const navigationItems = [
   { label: "Home", href: "#home" },
@@ -71,6 +75,7 @@ const ambassadorImages = [
   { id: 4, src: "/images/ellipse-240.png", alt: "Ambassador 4" },
 ];
 
+
 export const AboutSection = () => {
   return (
     <div className="bg-black flex flex-row justify-center w-full">
@@ -78,15 +83,12 @@ export const AboutSection = () => {
         <div className="absolute w-[1725px] h-[8697px] top-[1020px] left-[-158px]">
           <div className="absolute w-[1440px] h-[2536px] top-0 left-[158px] bg-[linear-gradient(180deg,rgba(169,223,245,0.8)_0%,rgba(94,24,157,1)_100%)]" />
 
-          <div className="absolute w-[607px] h-[482px] top-[1819px] left-[193px] bg-[#592b82] rounded-[20px]" />
-
-          <div className="absolute w-[607px] h-[482px] top-[1819px] left-[956px] bg-[#592b82] rounded-[20px]" />
 
           <div className="absolute w-[1440px] h-[2536px] top-[2969px] left-[159px] bg-[linear-gradient(180deg,rgba(151,211,235,0.8)_0%,rgba(119,56,177,1)_100%)]" />
 
           <div className="absolute w-[1440px] h-[2845px] top-[5852px] left-[158px] bg-[linear-gradient(180deg,rgba(135,105,178,1)_4%,rgba(161,222,244,1)_32%,rgba(119,56,177,1)_100%)]" />
 
-          <MissionSection />
+          <ValueSection />
           <img
             className="absolute w-[1436px] h-1.5 top-0 left-40"
             alt="Line"
@@ -130,12 +132,7 @@ export const AboutSection = () => {
             />
           ))}
 
-          <InfoCardSection />
-          <img
-            className="absolute w-[1440px] h-3.5 top-[1025px] left-[158px]"
-            alt="Line section"
-            src="/images/line-section.svg"
-          />
+          
 
           {focusItems.map((item, index) => (
             <div
@@ -180,22 +177,21 @@ export const AboutSection = () => {
           <ParticipantSection />
           <TestimonialsSection />
           <ComponentHeaderSection />
-          <ComponentNodeSection />
-          <blockquote className="absolute top-[1446px] left-[550px] [font-family:'Rubik-Bold',Helvetica] font-normal text-white text-[64px] tracking-[0] leading-[27.0px]">
-            <span className="font-bold">&quot;</span>
-            <span className="[font-family:'Rubik-BoldItalic',Helvetica] font-bold italic">
-              Lead the Change,
-              <br /> <br />
-              &nbsp;&nbsp;&nbsp;&nbsp; Shape the Future&quot;
-            </span>
-          </blockquote>
 
-          <div className="absolute top-[1388px] left-[824px] [font-family:'Rubik-Light',Helvetica] font-light text-white text-[21.8px] tracking-[0] leading-[9.2px] whitespace-nowrap">
-            TAGLINE
-          </div>
 
-          <MissionDetailsSection />
-          <VisionSection />
+
+          <InfoCardSection />
+          <img
+            className="absolute w-[1440px] h-3.5 top-[1025px] left-[158px]"
+            alt="Line section"
+            src="/images/line-section.svg"
+          />
+          <TaglineSection />
+          {/* <MissionDetailsSection /> */}
+          {/* <VisionSection /> */}
+
+
+
 
           {focusItems.map((item, index) => (
             <React.Fragment key={item.id}>
@@ -232,75 +228,9 @@ export const AboutSection = () => {
           />
         </div>
 
-        <header className="absolute w-[1520px] h-[1020px] top-0 -left-10">
-          <div className="absolute w-[1440px] h-[1020px] top-0 left-10 bg-[linear-gradient(0deg,rgba(16,15,13,1)_0%,rgba(16,15,13,1)_100%)]" />
-
+        
           <HeaderSection />
-          <nav
-            className="absolute w-[1258px] h-[62px] top-[29px] left-[120px] bg-[#c6ff894c] rounded-[23.18px] overflow-hidden border border-solid border-[#b1ea51] shadow-[0px_0px_10px_-2px_#7cce24]"
-            role="navigation"
-            aria-label="Main navigation"
-          >
-            <div className="absolute w-[153px] h-[33px] top-[15px] left-[1082px]">
-              <button
-                className="inline-flex items-center justify-center gap-[6.18px] px-[12.36px] py-[9.27px] absolute top-0 left-0 rounded-[6.18px] border-[1.16px] border-solid border-[#aee67f]"
-                type="button"
-              >
-                <span className="relative w-fit mt-[-1.16px] [font-family:'Inter-Medium',Helvetica] font-medium text-[#aee67f] text-[13.9px] tracking-[0] leading-[13.9px] whitespace-nowrap">
-                  Log in
-                </span>
-              </button>
 
-              <button
-                className="inline-flex items-center justify-center gap-[6.18px] px-[12.36px] py-[9.27px] absolute top-0 left-[78px] bg-[#aee67f] rounded-[6.18px]"
-                type="button"
-              >
-                <span className="relative w-fit mt-[-0.77px] [font-family:'Inter-Medium',Helvetica] font-medium text-[#1d3108] text-[13.9px] tracking-[0] leading-[13.9px] whitespace-nowrap">
-                  Sign up
-                </span>
-              </button>
-            </div>
-
-            <ul className="absolute w-[373px] h-3.5 top-6 left-[442px]">
-              <li className="inline-flex items-center gap-[42px] relative">
-                {navigationItems.map((item, index) => (
-                  <React.Fragment key={index}>
-                    {item.hasDropdown ? (
-                      <div className="relative w-[78.4px] h-3.5">
-                        <a
-                          href={item.href}
-                          className="absolute w-[59px] h-3.5 top-0 left-0 [font-family:'Inter-Bold',Helvetica] font-bold text-white text-[13.9px] tracking-[0] leading-[13.9px]"
-                        >
-                          {item.label}
-                        </a>
-                        <div 
-  className="absolute w-2.5 h-1.5 top-[5px] left-[66px] bg-cover"
-  style={{ 
-    backgroundImage: `url(${process.env.PUBLIC_URL}/images/vector-4-stroke.svg)` 
-  }}
-/>
-                      </div>
-                    ) : (
-                      <a
-                        href={item.href}
-                        className={`w-fit mt-[-0.77px] [font-family:'Inter-Bold',Helvetica] text-white text-[13.9px] leading-[13.9px] whitespace-nowrap ${index === 0 ? "relative" : "relative"} font-bold tracking-[0]`}
-                      >
-                        {item.label}
-                      </a>
-                    )}
-                  </React.Fragment>
-                ))}
-              </li>
-            </ul>
-
-            <div 
-  className="absolute w-[82px] h-[49px] top-1 left-[17px] bg-cover"
-  style={{ 
-    backgroundImage: `url(${process.env.PUBLIC_URL}/images/logo-sxc-putih-2-2.png)` 
-  }}
-/>
-          </nav>
-        </header>
 
         <FooterSection />
       </div>

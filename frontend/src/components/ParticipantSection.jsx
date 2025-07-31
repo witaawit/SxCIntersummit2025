@@ -2,7 +2,7 @@ import React from "react";
 
 export const ParticipantSection = () => {
   const participantData = {
-    image: "/images/ellipse-1.png",  // Update to point to the public/images folder
+    image: "/images/ellipse-6.svg",  // Update to point to the public/images folder
     testimonial:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
     name: "Rick Wright",

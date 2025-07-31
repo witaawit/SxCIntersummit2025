@@ -2,7 +2,7 @@ import React from "react";
 
 export const TestimonialsSection = () => {
   const testimonialData = {
-    avatar: "/images/ellipse-6.png",  // Update to point to the public/images folder
+    avatar: "/images/ellipse-6.svg",  // Update to point to the public/images folder
     quote:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
     name: "Mike Torello",

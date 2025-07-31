@@ -7,6 +7,7 @@ import { LoginPage } from './pages/Login';
 import { SignupPage } from './pages/Signup';
 import { AboutSection } from './pages/AboutSection'; 
 
+
 import ErrorBoundary from './components/ErrorBoundary'; // Import ErrorBoundary
 
 import './index.css';
