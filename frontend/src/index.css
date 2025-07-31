@@ -1,0 +1,100 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-black text-white;
+}
+
+.border-gradient {
+  border-image: linear-gradient(to right, #8257a9, #79ccea, #c4ef7b) 1;
+}
+
+.card {
+  border-width: 5px;
+  border-image: linear-gradient(to right, #8257a9, #79ccea, #c4ef7b) 1;
+  border-radius: 25px;
+  padding: 8px;
+}
+
+.card-events-header {
+  background: linear-gradient(to right, #8257a9, #79ccea, #c4ef7b);
+  border-radius: 25px;
+  padding: 16px 24px;
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.card-events-header .button {
+  background-color: #8257a9;
+  border-radius: 8px;
+  padding: 12px 24px;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+@layer base {
+  button,
+  input,
+  select,
+  textarea {
+    @apply appearance-none bg-transparent border-0 outline-none;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
+}
+
+
+:root {
+  --variable-collection-crayola-100: rgba(225, 255, 175, 1);
+  --variable-collection-crayola-200: rgba(211, 255, 137, 1);
+  --variable-collection-crayola-300: rgba(196, 239, 123, 1);
+  --variable-collection-crayola-400: rgba(177, 234, 81, 1);
+  --variable-collection-crayola-50: rgba(239, 255, 212, 1);
+  --variable-collection-crayola-500: rgba(152, 213, 50, 1);
+  --variable-collection-crayola-600: rgba(132, 197, 23, 1);
+  --variable-collection-crayola-700: rgba(106, 160, 16, 1);
+  --variable-collection-crayola-800: rgba(86, 130, 13, 1);
+  --variable-collection-crayola-900: rgba(67, 104, 5, 1);
+  --variable-collection-mblue-100: rgba(224, 244, 254, 1);
+  --variable-collection-mblue-200: rgba(202, 238, 251, 1);
+  --variable-collection-mblue-300: rgba(178, 226, 244, 1);
+  --variable-collection-mblue-400: rgba(152, 215, 237, 1);
+  --variable-collection-mblue-50: rgba(236, 249, 255, 1);
+  --variable-collection-mblue-500: rgba(121, 204, 234, 1);
+  --variable-collection-mblue-600: rgba(94, 199, 237, 1);
+  --variable-collection-mblue-700: rgba(54, 181, 226, 1);
+  --variable-collection-mblue-800: rgba(22, 150, 197, 1);
+  --variable-collection-mblue-900: rgba(10, 121, 161, 1);
+  --variable-collection-purple-50: rgba(255, 255, 255, 1);
+  --variable-collection-rpurple-100: rgba(232, 209, 252, 1);
+  --variable-collection-rpurple-200: rgba(210, 174, 243, 1);
+  --variable-collection-rpurple-300: rgba(186, 142, 226, 1);
+  --variable-collection-rpurple-400: rgba(158, 114, 198, 1);
+  --variable-collection-rpurple-50: rgba(243, 229, 255, 1);
+  --variable-collection-rpurple-500: rgba(130, 87, 169, 1);
+  --variable-collection-rpurple-600: rgba(110, 66, 149, 1);
+  --variable-collection-rpurple-700: rgba(89, 43, 130, 1);
+  --variable-collection-rpurple-800: rgba(60, 19, 96, 1);
+  --variable-collection-rpurple-900: rgba(33, 0, 62, 1);
+}
+
+
+/* Add this to your styles.css or global stylesheet */
+
+
