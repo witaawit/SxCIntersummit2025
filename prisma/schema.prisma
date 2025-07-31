@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int            @id @default(autoincrement())
+  name             String
+  email            String         @unique
+  password         String
+  wa_number        String?
+  line_id          String?
+  role             String         @default("USER")
+  institution_name String?
+  major            String?
+  ktmPhoto         String?
+  institution      Institution?
+  createdAt        DateTime       @default(now())
+  Team             Team[]         @relation("TeamMembers")
+  leadingTeam      Team[]         @relation("TeamLeader")
+  payment          Payment[]
+  notification     Notification[]
+  tempIndividu     tempIndividu?
+  SeminarReg       SeminarReg[]
+}
+
+model Staff {
+  id           Int            @id @default(autoincrement())
+  name         String
+  email        String         @unique
+  password     String
+  role         StaffRole
+  divisionId   Int
+  createdAt    DateTime       @default(now())
+  divisions    Division       @relation(fields: [divisionId], references: [id])
+  Notification Notification[]
+}
+
+model Division {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  staff Staff[]
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  staffId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  staff     Staff    @relation(fields: [staffId], references: [id])
+}
+
+model tempIndividu {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id             Int          @id @default(autoincrement())
+  name           String       @unique
+  code           String       @unique
+  createdAt      DateTime     @default(now())
+  leaderId       Int
+  programId      Int
+  status         Int          @default(1)
+  submissionId   Int?
+  programcode    Program      @relation(fields: [programId], references: [id])
+  statuscode     status       @relation(fields: [status], references: [id])
+  leader         User         @relation("TeamLeader", fields: [leaderId], references: [id])
+  members        User[]       @relation("TeamMembers")
+  submission     Submission?  @relation(fields: [submissionId], references: [id])
+  submissionTeam Submission[] @relation(name: "teamSubmission")
+  Payment        Payment[]
+}
+
+model status {
+  id          Int          @id @default(autoincrement())
+  description String
+  teams       Team[]
+  SeminarReg  SeminarReg[]
+}
+
+model Program {
+  id            Int          @id @default(autoincrement())
+  name          String       @unique
+  type          String
+  description   String?
+  teams         Team[]
+  registrations SeminarReg[]
+}
+
+model SeminarReg {
+  id           Int          @id @default(autoincrement())
+  userId       Int
+  programId    Int
+  status       Int
+  registeredAt DateTime     @default(now())
+  user         User         @relation(fields: [userId], references: [id])
+  program      Program      @relation(fields: [programId], references: [id])
+  statuscode   status       @relation(fields: [status], references: [id])
+  submission   Submission[]
+  payment      Payment[]
+}
+
+model Submission {
+  id           Int         @id @default(autoincrement())
+  seminarId    Int?
+  teamId       Int?
+  stage        stages
+  Promotion    String?
+  Task         String?
+  filePath     String
+  submittedAt  DateTime    @default(now())
+  registration SeminarReg? @relation(fields: [seminarId], references: [id])
+  teamcode     Team?       @relation(name: "teamSubmission", fields: [teamId], references: [id])
+  teams        Team[]
+}
+
+model Payment {
+  id           Int         @id @default(autoincrement())
+  userId       Int?
+  teamId       Int?
+  SeminarRegId Int?
+  filePath     String
+  submittedAt  DateTime    @default(now())
+  user         User?       @relation(fields: [userId], references: [id])
+  team         Team?       @relation(fields: [teamId], references: [id])
+  SeminarReg   SeminarReg? @relation(fields: [SeminarRegId], references: [id])
+}
+
+model PendingUserVerification {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String   @unique
+  password  String?
+  otp       String
+  otpSentAt DateTime @default(now())
+  otpTries  Int      @default(0)
+  purpose   String
+}
+
+enum stages {
+  REGISTRATION
+  SEMINAR
+  FINAL
+}
+
+enum Institution {
+  UNIV
+  HSC
+}
+
+enum StaffRole {
+  ADMIN
+  BMC_ADMIN
+  BCL_ADMIN
+  IBCC_ADMIN
+  IBPC_ADMIN
+  CHAMBERS_ADMIN
+  COMPANY_VISIT_ADMIN
+  IC_ADMIN
+  PO
+}
