@@ -18,7 +18,7 @@ model User {
   institution_name String?
   major            String?
   ktmPhoto         String?
-  institution      Institution
+  institution      Institution?
   createdAt        DateTime       @default(now())
   Team             Team[]         @relation("TeamMembers")
   leadingTeam      Team[]         @relation("TeamLeader")

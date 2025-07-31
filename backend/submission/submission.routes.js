@@ -4,6 +4,6 @@ const controller = require("./submission.controller");
 const upload = require("../middlewares/multer.middleware");
 const { authenticate } = require("../middlewares/auth.middleware");
 
-router.post('/upload', authenticate, upload.single("file"), controller.upload);
+// router.post('/upload', authenticate, upload.single("file"), controller.upload);
 
 module.exports = router;

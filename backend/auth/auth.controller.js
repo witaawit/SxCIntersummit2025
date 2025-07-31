@@ -1,10 +1,11 @@
 // ini controller untuk autentikasi (login, register, verifikasi OTP, dan forgot-password)
 const { findUserByEmail, createUser, createTempUser, findTempEmail, sendOtpEmail, incrementAttempt, deleteTempUser, updateTempUser, findStaffByEmail, updateUserPassword } = require("./auth.service");
 const { hashPassword, comparePassword } = require("../utils/hash");
+const {validatePassword} = require("../utils/password")
 const jwt = require("jsonwebtoken");
 const { secret, expiresIn } = require("../config/jwt");
 const MSG = require("../constants/messages");
-const prisma = require("../config/db");
+// const prisma = require("../config/db");
 
 
 
@@ -23,6 +24,10 @@ exports.register = async (req, res) => {
     return res.status(400).json({ message: MSG.EMAIL_EXISTS });
   }
 
+  const passwordError = await validatePassword(password);
+  if (passwordError.valid == false) {
+    return res.status(400).json({ message: passwordError.message });
+  }
   const hashed = await hashPassword(password);
   const OTP = generateOTP();
   const user = await createTempUser({ name, email, password: hashed, otp: OTP, purpose: 'register' }); // insert temp user dengan field name, email, password, dan otp

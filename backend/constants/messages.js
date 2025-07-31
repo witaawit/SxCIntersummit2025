@@ -5,6 +5,13 @@ module.exports = {
   EMAIL_NOT_FOUND: 'Email tidak ditemukan',
   INVALID_PASSWORD: 'Password salah',
 
+  PASSWORD_TOO_SHORT: 'Password harus minimal 8 karakter',
+  PASSWORD_NO_UPPERCASE: 'Password harus mengandung huruf kapital',
+  PASSWORD_NO_LOWERCASE: 'Password harus mengandung huruf kecil',
+  PASSWORD_NO_NUMBER: 'Password harus mengandung angka',
+  PASSWORD_NO_SPECIAL_CHAR: 'Password harus mengandung karakter khusus',
+  PASSWORD_INVALID: 'Password tidak valid',
+
   TOKEN_NOT_FOUND: 'Token tidak ditemukan',
   INVALID_TOKEN: 'Token tidak valid',
   TOKEN_EXPIRED: 'Token sudah kedaluwarsa',

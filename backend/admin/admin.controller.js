@@ -1,6 +1,6 @@
 const { getAllUsers, getAllStaff } = require('./admin.service');
 
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = async ( res) => {
     try{
         const users = await getAllUsers();
         res.status(200).json(users);
@@ -9,7 +9,7 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-exports.getAllStaff = async (req, res) => {
+exports.getAllStaff = async ( res) => {
     try {
         const staffs = await getAllStaff();
         res.status(200).json(staffs);
