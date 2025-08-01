@@ -97,8 +97,8 @@ export const SignupPage = () => {
                   >
                     Login
                   </Link>
-                  <span className="ml-4 text-2xl sm:text-[29.4px] font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#562780] to-[#8257a9]">
-                    Sign Up
+                  <span className="text-[24px] sm:text-[29.4px] font-bold leading-[41.2px] ml-4 cursor-pointer bg-clip-text text-transparent bg-gradient-to-b from-[#562780] to-[#8257a9] underline decoration-[#8257a9] decoration-1 underline-offset-10">
+                    Register
                   </span>
                 </div>
               </div>

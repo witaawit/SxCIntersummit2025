@@ -5,8 +5,8 @@ import { Outlet } from "react-router-dom";
 const AppLayout = () => {
   return (
     <div className="font-sans bg-black text-white min-h-screen">
-      <Outlet />
       <Navbar />
+      <Outlet />
     </div>
   );
 };

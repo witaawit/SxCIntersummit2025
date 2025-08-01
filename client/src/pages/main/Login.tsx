@@ -1,29 +1,40 @@
+import { loginSchema } from "@/types/schema";
 import React, { useState } from "react";
 import { Link, type CreateRequestHandlerFunction } from "react-router-dom";
+import type { z } from "zod";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { MoveLeft } from "lucide-react";
+
+export type FormFields = z.infer<typeof loginSchema>;
 
 const Login = () => {
   // Login state
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
 
   // Reset password state
-  const [resetStep, setResetStep] = useState(null); // null | 'request' | 'verify' | 'new_password'
+  const [resetStep, setResetStep] = useState<
+    null | "request" | "verify" | "new_password"
+  >(null); // null | 'request' | 'verify' | 'new_password'
   const [resetEmail, setResetEmail] = useState("");
   const [resetCode, setResetCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEmail(e.target.value);
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setPassword(e.target.value);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Login attempt with:", { email, password });
+  // React Hook Form
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormFields>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const handleLogin: SubmitHandler<FormFields> = async (data) => {
+    console.log("Login attempt with:", data);
   };
 
   const handleGoogleSignIn = () => {
@@ -77,7 +88,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center w-full    sm:p-0">
       {/* Main Container */}
-      <div className="relative w-full  min-h-[800px] sm:min-h-screen bg-white overflow-hidden rounded-lg sm:rounded-none">
+      <div className="relative w-full flex justify-around  items-center  min-h-[800px] sm:min-h-screen bg-white overflow-hidden rounded-lg sm:rounded-none">
         {/* Background Image */}
         <img
           className="absolute w-full h-full object-cover"
@@ -85,8 +96,13 @@ const Login = () => {
           src="/images/pexels-tanishka-357202-973226-1.png"
         />
 
+        {/* Back Button */}
+        <div className="cursor-pointer absolute top-15 left-15 z-10">
+          <MoveLeft size={40} />
+        </div>
+
         {/* Gray Overlay (Left Half) */}
-        <div className="absolute w-full md:w-1/2 h-full bg-[#d9d9d9]" />
+        <div className="absolute w-full md:w-1/2 left-0 h-full bg-[#d9d9d9]" />
 
         {/* Gradient Overlay */}
         <div className="absolute w-full h-full bg-gradient-to-b from-[#c4ef7b] via-[#79ccea] to-[#8257a9] opacity-[0.77]" />
@@ -106,13 +122,15 @@ const Login = () => {
         />
 
         {/* Logo */}
-        <img
-          className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 md:left-[100px] lg:left-[210px] md:translate-x-0 w-[300px] sm:w-[400px] h-auto"
-          alt="Logo"
-          src="/images/logo-intersummit-3.png"
-        />
+        <div>
+          <img
+            className=" md:translate-x-0 w-[300px] sm:w-[400px] "
+            alt="Logo"
+            src="/images/logo-intersummit-3.png"
+          />
+        </div>
 
-        {/* "Speak Ideas, Spark" and "Movement" Text */}
+        {/* "Speak Ideas, Spark" and "MovhandleLoginlog inement" Text */}
         <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
           <div className="text-2xl md:text-3xl font-bold">
             <span className="text-white">Speak </span>
@@ -129,12 +147,12 @@ const Login = () => {
         </div>
 
         {/* Login/Reset Form */}
-        <div className="absolute top-1/2  transform -translate-y-1/2 -translate-x-1/2  md:right-[30px] lg:right-[70px] w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px]">
-          {/* <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2  md:right-[30px]  w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px]"> */}
+        {/* <div className="absolute top-1/2  transform -translate-y-1/2 -translate-x-1/2  md:right-[30px] lg:right-[70px] w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px]"> */}
+        <div className="w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px] mr-10">
           {!resetStep ? (
             // LOGIN FORM
             <div className="relative bg-transparent bg-opacity-20 backdrop-blur-sm rounded-xl p-6 sm:p-8 ">
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleSubmit(handleLogin)}>
                 {/* Tabs */}
                 <nav
                   className="flex justify-center mb-6 sm:mb-8"
@@ -145,7 +163,7 @@ const Login = () => {
                     onClick={() => handleTabSwitch("login")}
                     className={`text-[24px] sm:text-[29.4px] font-bold leading-[41.2px] mr-4 ${
                       activeTab === "login"
-                        ? "text-transparent bg-clip-text bg-gradient-to-b from-[#562780] to-[#8257a9] underline"
+                        ? "cursor-pointer bg-clip-text text-transparent bg-gradient-to-b from-[#562780] to-[#8257a9] underline decoration-[#8257a9] decoration-1 underline-offset-10"
                         : "text-[#727086]"
                     }`}
                   >
@@ -166,13 +184,18 @@ const Login = () => {
                   </label>
                   <input
                     type="email"
-                    value={email}
-                    onChange={handleEmailChange}
+                    {...register("email")}
                     placeholder="Enter your email address"
                     className="w-full h-[46px] px-4 text-black text-xs sm:text-sm bg-[#f2f2f2] rounded-[10px] border border-[#aeaeae] placeholder-[#00000073] focus:outline-none focus:ring-2 focus:ring-purple-500"
                     required
                   />
-                  <p className="text-red-600 text-">a</p>
+                  <p
+                    className={`${
+                      errors.email ? "text-red-600" : "text-transparent"
+                    }`}
+                  >
+                    {errors.email?.message || "a"}
+                  </p>
                 </div>
 
                 {/* Password Field */}
@@ -183,11 +206,9 @@ const Login = () => {
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={handlePasswordChange}
+                      {...register("password")}
                       placeholder="Enter your password"
                       className="w-full h-[46px] px-4 pr-10 text-black text-xs sm:text-sm bg-[#f2f2f2] rounded-[10px] border border-[#aeaeae] placeholder-[#00000073] focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      required
                     />
                     <button
                       type="button"
@@ -200,6 +221,13 @@ const Login = () => {
                       <img src="/images/vector.svg" alt="eye-icon" />
                     </button>
                   </div>
+                  <p
+                    className={`${
+                      errors.password ? "text-red-600" : "text-transparent"
+                    }`}
+                  >
+                    {errors.password?.message ? errors.password?.message : "a"}
+                  </p>
                   <button
                     type="button"
                     onClick={handleForgotPassword}
