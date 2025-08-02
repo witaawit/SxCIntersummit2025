@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true); // Control navbar visibility
+  const [lastScrollY, setLastScrollY] = useState(0); // Track the scroll position
   const location = useLocation();
 
   const toggleMenu = () => {
@@ -14,14 +16,34 @@ const Navbar = () => {
     return null;
   }
 
-  /* 
-    🔥 TIDAK ADA PERUBAHAN STYLE DI BAWAH INI 
-    Semua kode styling dipertahankan 100% sama persis
-  */
+  // Scroll handling logic
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        // Scrolling down
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
+
   return (
     <nav
-      style={{ backgroundOpacity: 0.3 }}
-      className="grid grid-cols-3 px-6 py-3 bg-gradient-to-r bg-[#C6FF894D] bg-opacity-30 border border-[#abdc57] rounded-full shadow-[0_0_8px_#abdc57] w-full max-w-[90%] mx-auto mt-6 fixed top-0 left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md"
+      className={`grid grid-cols-3 px-6 py-3 bg-gradient-to-r bg-[#C6FF894D] bg-opacity-30 border border-[#abdc57] rounded-full shadow-[0_0_8px_#abdc57] w-full max-w-[90%] mx-auto mt-6 fixed left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md transition-all duration-800 ${
+        isVisible ? "top-0" : "-top-32" // Increased the value of -top-32 for better hide effect
+      }`}
     >
       {/* Left - Logo */}
       <div className="flex items-center space-x-2">
@@ -76,7 +98,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Hamburger */}
       <button
-        className="md:hidden  md:col-span-1 col-span-0 text-white"
+        className="md:hidden absolute right-5 top-4 text-white" // Positioning the hamburger button to the right
         onClick={toggleMenu}
       >
         <svg

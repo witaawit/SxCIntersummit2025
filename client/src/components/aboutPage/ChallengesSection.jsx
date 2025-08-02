@@ -7,85 +7,73 @@ export const ChallengesSection = () => {
       title: "Lorem",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-      width: "404px",
-      height: "304px",
-      titleWidth: "400px",
-      descriptionWidth: "299px",
-      left: "0",
-      image: "/images/challenge1.jpg", // Gambar untuk challenge 1
     },
     {
       id: 2,
       title: "Lorem",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-      width: "317px",
-      height: "277px",
-      titleWidth: "313px",
-      descriptionWidth: "299px",
-      left: "461px",
-      image: "/images/challenge2.jpg", // Gambar untuk challenge 2
+        "Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
     },
     {
       id: 3,
       title: "Lorem",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-      width: "356px",
-      height: "249px",
-      titleWidth: "352px",
-      descriptionWidth: "298px",
-      left: "923px",
-      image: "/images/challenge3.jpg", // Gambar untuk challenge 3
+    },
+    {
+      id: 4,
+      title: "Lorem",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
+    },
+    {
+      id: 5,
+      title: "Lorem",
+      description:
+        "Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
+    },
+    {
+      id: 6,
+      title: "Lorem",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
     },
   ];
 
   return (
-    <section
-      className="absolute w-[1275px] h-[304px] top-[3402px] left-[241px]"
-      role="region"
-      aria-label="Challenges Section"
-    >
-      {challengesData.map((challenge, index) => (
-        <article
-          key={challenge.id}
-          className="absolute top-0 left-0"
-          style={{
-            width: challenge.width,
-            height: challenge.height,
-            left: challenge.left,
-            top: index === 1 ? "1px" : index === 2 ? "2px" : "0",
-          }}
-        >
-          <img
-            className="absolute w-full h-full top-0 left-0 object-cover rounded-[20px]" // Gambar di background
-            src={challenge.image}
-            alt={`Challenge ${challenge.id}`}
-          />
-          
-          <p
-            className="absolute top-[198px] left-0 [font-family:'Plus_Jakarta_Sans-Bold',Helvetica] font-bold text-[#ffffffcc] text-lg tracking-[0] leading-[25.2px]"
-            style={{
-              width: challenge.descriptionWidth,
-              top: index === 1 ? "197px" : index === 2 ? "196px" : "198px",
-            }}
-          >
-            {challenge.description}
-          </p>
+    <section className="w-full py-8 relative z-10 px-4 sm:px-8 lg:px-16" role="region" aria-label="Challenges Section">
+      <div className="text-center mb-8">
+        <h2 className="font-medium text-white text-[54px] leading-[62px]">
+          Challenges
+        </h2>
+      </div>
 
-          <h3
-            className="absolute left-0 [font-family:'Rubik-Medium',Helvetica] font-medium text-white text-[26px] tracking-[-0.26px] leading-[normal]"
-            style={{
-              width: challenge.titleWidth,
-              top: index === 1 ? "140px" : index === 2 ? "139px" : "141px",
-            }}
+      {/* Flex Grid for Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Increased gap between cards */}
+        {challengesData.map((challenge) => (
+          <article
+            key={challenge.id}
+            className="flex flex-col items-center rounded-[15px] p-6 mx-auto" // Added mx-auto to center the cards
           >
-            {challenge.title}
-          </h3>
+            {/* Green Circle on Top */}
+            <div className="w-16 h-16 bg-[#b9fd50] rounded-full mb-4 flex justify-center items-center">
+              <img
+                src="/images/your-image.png" // Ganti dengan gambar yang sesuai
+                alt="Icon"
+                className="w-full h-full object-cover rounded-full"
+              />
+            </div>
 
-          <div className="absolute w-[98px] h-[98px] top-0 left-0 bg-[#b9fd50] rounded-[49px]" />
-        </article>
-      ))}
+            {/* Title */}
+            <h3 className="text-white text-lg font-semibold text-center">{challenge.title}</h3>
+
+            {/* Description */}
+            <p className="text-[#D1B3FF] text-sm text-center mt-4">
+              {challenge.description}
+            </p>
+          </article>
+        ))}
+      </div>
     </section>
   );
 };
