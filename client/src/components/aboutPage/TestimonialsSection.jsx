@@ -1,47 +1,69 @@
-import React from "react";
+// TestimonialsSection.jsx
+import * as React from "react"; // Ensure that React is imported if needed.
 
-export const TestimonialsSection = () => {
-  const testimonialData = {
-    avatar: "/images/ellipse-6.png",  // Update to point to the public/images folder
-    quote:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
-    name: "Mike Torello",
-    title: "Executive Engineer",
-  };
+const TestimonialsSection = () => {
+  const testimonials = [
+    {
+      id: 1,
+      name: "Mike Drake",
+      title: "Executive Engineer",
+      image: "/images/aboutpage/testimonials/mike.png",
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    },
+    {
+      id: 2,
+      name: "Ravi Arman",
+      title: "Executive Engineer",
+      image: "/images/aboutpage/testimonials/rick.png",
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    },
+    {
+      id: 3,
+      name: "Devon Miles",
+      title: "Executive Engineer",
+      image: "/images/aboutpage/testimonials/devon.png",
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    },
+  ];
 
   return (
-    <section
-      className="absolute w-[543px] h-[318px] top-[6186px] left-0"
-      role="region"
-      aria-label="Customer testimonials"
-    >
-      <article className="relative w-[537px] h-[318px]">
-        <div className="absolute w-[537px] h-[282px] top-9 left-0 bg-[#ffffff21] rounded-[38.87px] border-[none] backdrop-blur-[9.25px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(9.25px)_brightness(100%)] before:content-[''] before:absolute before:inset-0 before:p-[2.78px] before:rounded-[38.87px] before:[background:linear-gradient(105deg,rgba(255,255,255,0.77)_0%,rgba(255,255,255,0.24)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none" />
-
-        <div
-          className="absolute w-[67px] h-[63px] top-[33px] left-[234px] bg-[#00000040] rounded-[33.32px/31.46px] blur-[15.73px]"
-          aria-hidden="true"
-        />
-
-        {/* Use the public path for the image */}
-        <img
-          className="absolute w-[81px] h-[81px] top-0 left-[222px] object-cover"
-          alt={`Profile picture of ${testimonialData.name}`}
-          src={testimonialData.avatar}
-        />
-
-        <blockquote className="absolute w-[413px] top-[113px] left-14 [font-family:'Proxima_Nova-Regular',Helvetica] font-normal text-white text-[17px] text-center tracking-[0] leading-[24.2px]">
-          {testimonialData.quote}
-        </blockquote>
-
-        <cite className="absolute top-[251px] left-[196px] [font-family:'Proxima_Nova-Bold',Helvetica] font-bold text-[#e1ab1f] text-[24.4px] text-center tracking-[0] leading-[24.2px] whitespace-nowrap not-italic">
-          {testimonialData.name}
-        </cite>
-
-        <div className="left-[206px] absolute top-[274px] [font-family:'Montserrat-Medium',Helvetica] font-medium text-white text-[11.4px] text-center tracking-[0] leading-[24.2px] whitespace-nowrap">
-          {testimonialData.title}
+    <section className="py-5 px-4 bg-gradient-purple min-h-screen flex items-center">
+      <div className="container mx-auto max-w-6xl">
+        <h2 className="text-4xl font-bold text-white text-center mb-16">
+          Testimonials
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {testimonials.map((testimonial) => (
+            <div key={testimonial.id} className="bg-glass-card backdrop-blur-sm border border-glass-border rounded-3xl p-8 h-full flex flex-col">
+              {/* Profile Image */}
+              <div className="flex justify-center mb-6">
+                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/30">
+                  <img 
+                    src={testimonial.image} 
+                    alt={`${testimonial.name} profile`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              
+              {/* Testimonial Text */}
+              <p className="text-white text-sm leading-relaxed mb-8 flex-grow">
+                {testimonial.text}
+              </p>
+              
+              {/* Name and Title */}
+              <div className="text-center">
+                <h3 className="text-accent font-bold text-lg mb-1">
+                  {testimonial.name}
+                </h3>
+                <p className="text-white/80 text-sm">{testimonial.title}</p>
+              </div>
+            </div>
+          ))}
         </div>
-      </article>
+      </div>
     </section>
   );
 };
+
+export default TestimonialsSection;  // Ensure you're using default export
