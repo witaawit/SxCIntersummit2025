@@ -20,7 +20,7 @@ export const FooterSection = () => {
   ];
 
   return (
-    <footer className="absolute w-[1440px] h-[534px] top-[9717px] left-0 bg-transparent overflow-hidden bg-[linear-gradient(360deg,rgba(168,202,133,1)_34%,rgba(166,206,231,1)_58%,rgba(133,99,175,1)_100%)]">
+    <footer className="absolute w-full h-[534px] top-[9717px] left-0 bg-transparent overflow-hidden bg-[linear-gradient(360deg,rgba(168,202,133,1)_34%,rgba(166,206,231,1)_58%,rgba(133,99,175,1)_100%)]">
       <div className="relative w-[1435px] h-[1308px] -top-px">
         <div className="w-[1435px] h-[1308px] border-t [border-top-style:solid] border-[#ecdffb1a] absolute top-0 left-0">
           <div className="absolute w-[1435px] h-[444px] top-20 left-0">
@@ -94,7 +94,9 @@ export const FooterSection = () => {
                   <a
                     key={index}
                     href={link.href}
-                    className={`${index === 1 ? "w-fit whitespace-nowrap" : "self-stretch"} [font-family:'Plus_Jakarta_Sans-Bold',Helvetica] font-bold text-variable-collection-purple200-70 text-base tracking-[0] leading-6 hover:text-white transition-colors duration-200`}
+                    className={`${
+                      index === 1 ? "w-fit whitespace-nowrap" : "self-stretch"
+                    } [font-family:'Plus_Jakarta_Sans-Bold',Helvetica] font-bold text-variable-collection-purple200-70 text-base tracking-[0] leading-6 hover:text-white transition-colors duration-200`}
                   >
                     {link.name}
                   </a>
@@ -109,7 +111,9 @@ export const FooterSection = () => {
                 {contactInfo.map((info, index) => (
                   <div
                     key={index}
-                    className={`${index === 1 ? "w-fit whitespace-nowrap" : "self-stretch"} font-body-16 font-[number:var(--body-16-font-weight)] text-variable-collection-purple200-70 text-[length:var(--body-16-font-size)] tracking-[var(--body-16-letter-spacing)] leading-[var(--body-16-line-height)] [font-style:var(--body-16-font-style)]`}
+                    className={`${
+                      index === 1 ? "w-fit whitespace-nowrap" : "self-stretch"
+                    } font-body-16 font-[number:var(--body-16-font-weight)] text-variable-collection-purple200-70 text-[length:var(--body-16-font-size)] tracking-[var(--body-16-letter-spacing)] leading-[var(--body-16-line-height)] [font-style:var(--body-16-font-style)]`}
                   >
                     {info.value}
                   </div>

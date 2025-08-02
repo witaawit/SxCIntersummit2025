@@ -71,12 +71,6 @@ const Login = () => {
       alert("Passwords don't match!");
       return;
     }
-    console.log(
-      "Password reset for:",
-      resetEmail,
-      "New password:",
-      newPassword
-    );
     // Submit to your backend
     setResetStep(null); // Return to login
   };
@@ -88,10 +82,10 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center w-full    sm:p-0">
       {/* Main Container */}
-      <div className="relative w-full flex justify-around  items-center  min-h-[800px] sm:min-h-screen bg-white overflow-hidden rounded-lg sm:rounded-none">
+      <div className="relative w-full flex justify-around  items-center  min-h-[800px] sm:min-h-screen bg-white overflow-hidden rounded-lg sm:rounded-none max-md:justify-center max-md:min-h-screen">
         {/* Background Image */}
         <img
-          className="absolute w-full h-full object-cover"
+          className="absolute  w-full h-full object-cover"
           alt="Background"
           src="/images/pexels-tanishka-357202-973226-1.png"
         />
@@ -124,7 +118,7 @@ const Login = () => {
         {/* Logo */}
         <div>
           <img
-            className=" md:translate-x-0 w-[300px] sm:w-[400px] "
+            className=" md:translate-x-0 w-[300px] sm:w-[500px] max-md:hidden"
             alt="Logo"
             src="/images/logo-intersummit-3.png"
           />
@@ -148,7 +142,7 @@ const Login = () => {
 
         {/* Login/Reset Form */}
         {/* <div className="absolute top-1/2  transform -translate-y-1/2 -translate-x-1/2  md:right-[30px] lg:right-[70px] w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px]"> */}
-        <div className="w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px] mr-10">
+        <div className="w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px] mr-10 max-md:mr-0 ">
           {!resetStep ? (
             // LOGIN FORM
             <div className="relative bg-transparent bg-opacity-20 backdrop-blur-sm rounded-xl p-6 sm:p-8 ">
@@ -171,7 +165,7 @@ const Login = () => {
                   </button>
                   <Link
                     to="/signup"
-                    className="text-[#737186] text-1xl sm:text-[29.4px] font-bold hover:opacity-80 transition-opacity"
+                    className="text-[#737186] text-[24px] sm:text-[29.4px] leading-[41.2px] font-bold hover:opacity-80 transition-opacity"
                   >
                     Register
                   </Link>
@@ -242,6 +236,7 @@ const Login = () => {
                   type="submit"
                   className="w-full h-12 mt-4 bg-gradient-to-b from-[#562780] to-[#8257a9] text-white font-bold text-xs sm:text-sm rounded-[10px] hover:opacity-90 cursor-pointer"
                 >
+                  {/* <svg class="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24"></svg> */}
                   Log In
                 </button>
 

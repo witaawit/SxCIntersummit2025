@@ -1,6 +1,9 @@
+import type { registerschema } from "@/types/schema";
+import { MoveLeft } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+export type FormFields = z.infer<typeof registerschema>;
 export const SignupPage = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -31,9 +34,9 @@ export const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4 sm:p-0">
+    <div className="min-h-screen bg-black flex flex-col items-center w-full    sm:p-0">
       {/* Main Container */}
-      <div className="relative w-full max-w-[1440px] min-h-[800px] sm:min-h-[1024px] bg-black overflow-hidden rounded-lg sm:rounded-none">
+      <div className="relative w-full flex justify-around  items-center  min-h-[800px] sm:min-h-screen bg-white overflow-hidden rounded-lg sm:rounded-none max-md:justify-center max-md:min-h-screen">
         {/* Background Image */}
         <img
           className="absolute w-full h-full object-cover"
@@ -41,8 +44,13 @@ export const SignupPage = () => {
           src="/images/pexels-tanishka-357202-973226-1.png"
         />
 
+        {/* Back Button */}
+        <div className="cursor-pointer absolute top-15 left-15 z-10">
+          <MoveLeft size={40} />
+        </div>
+
         {/* Gray Overlay (Left Half) */}
-        <div className="absolute w-full md:w-1/2 h-full bg-[#d9d9d9]" />
+        <div className="absolute w-full md:w-1/2 left-0 h-full bg-[#d9d9d9]" />
 
         {/* Gradient Overlay */}
         <div className="absolute w-full h-full bg-gradient-to-b from-[#c4ef7b] via-[#79ccea] to-[#8257a9] opacity-[0.77]" />
@@ -63,7 +71,7 @@ export const SignupPage = () => {
 
         {/* Logo */}
         <img
-          className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 md:left-[100px] lg:left-[210px] md:translate-x-0 w-[300px] sm:w-[400px] h-auto"
+          className=" md:translate-x-0 w-[300px] sm:w-[500px] max-md:hidden"
           alt="Logo"
           src="/images/logo-intersummit-3.png"
         />
@@ -85,12 +93,12 @@ export const SignupPage = () => {
         </div>
 
         {/* Registration Form */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-[30px] lg:right-[50px] w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[452px]">
-          <div className="relative text bg-opacity-20 backdrop-blur-sm rounded-xl p-6 sm:p-8 shadow-lg">
+        <div className="w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px] mr-10 max-md:mr-0 ">
+          <div className="relative text bg-opacity-20 backdrop-blur-sm rounded-xl p-6 sm:p-8 ">
             <form onSubmit={handleSubmit}>
               {/* Login/Register Tabs */}
               <div className="flex justify-center mb-6 sm:mb-8">
-                <div className="flex">
+                <div className="flex items-center">
                   <Link
                     to="/login"
                     className="text-[#737186] text-2xl sm:text-[29.4px] font-bold hover:opacity-80 transition-opacity"

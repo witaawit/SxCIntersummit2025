@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   // Sembunyikan navbar di halaman login dan signup
-  if (["/login", "/signup", "/about"].includes(location.pathname)) {
+  if (["/login", "/register", "/about"].includes(location.pathname)) {
     return null;
   }
 

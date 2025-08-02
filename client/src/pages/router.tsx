@@ -10,7 +10,6 @@ import AppLayout from "@/layout/AppLayout";
 import RoleLayout from "@/layout/RoleLayout";
 import { SignupPage } from "./main/SignUpPage";
 import { AboutSection } from "./main/AboutSection";
-import GuestPage from "./main/GuestPage";
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +26,7 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "signup",
+        path: "register",
         element: <SignupPage />,
       },
       {
