@@ -272,16 +272,6 @@ const Login = () => {
 
                 {/* Register Link */}
                 <p className="mt-6 text-center text-xs text-white">
-<<<<<<< HEAD:frontend/src/pages/Login.jsx
-                  Don't have an account?{" "}
-                  <button
-                    type="button"
-                    className="text-blue-800 underline hover:text-blue-600"
-                    onClick={() => handleTabSwitch("register")}
-                  >
-                    Register Now!
-                  </button>
-=======
                   Belum punya akun?{" "}
                   <Link to="/signup">
                     <button
@@ -292,7 +282,6 @@ const Login = () => {
                       Register Now!
                     </button>
                   </Link>
->>>>>>> About-Mike:client/src/pages/main/Login.tsx
                 </p>
               </form>
             </div>
