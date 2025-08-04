@@ -1,15 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const controller = require('./bmcA.controller');
+const { authenticate } = require('../../middlewares/auth.middleware');
+const { isBMCAdmin, isSuperAdmin } = require('../../middlewares/role.middleware');
 
-const bmcController = require('./bmcA.controller');
-
-router.get('/', bmcController.getAllBmc);         // GET semua BMC
-router.get('/:id', bmcController.getBmcById);     // GET BMC by ID
-router.post('/', bmcController.createBmc);        // POST buat BMC baru
-router.put('/:id', bmcController.updateBmc);      // PUT update BMC
-router.delete('/:id', bmcController.deleteBmc);   // DELETE BMC
-router.get('/submission', authenticate, isProjectOfficer, getBMCSubmissions);
-router.put('/submission/:id/verify', authenticate, isBMCAdmin, verifySubmission);
-router.delete('/submission/:id', authenticate, isSuperAdmin, deleteSubmission);
+router.get('/teams', authenticate, isBMCAdmin, controller.getAllBMCTeams);
+router.patch('/teams/:id/status', authenticate, isBMCAdmin, controller.updateTeamStatus);
+router.post('/announcement/team/:id', authenticate, isBMCAdmin, controller.postAnnouncementToTeamMembers);
+router.post('/announcement/all', authenticate, isSuperAdmin, controller.postNotificationToAll);
+router.get('/search', authenticate, isBMCAdmin, controller.searchTeam);
 
 module.exports = router;

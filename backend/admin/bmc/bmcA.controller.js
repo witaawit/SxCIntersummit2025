@@ -1,38 +1,52 @@
 const service = require('./bmcA.service');
-
-// Handler langsung didefinisikan di sini
-exports.getBMCSubmissions = async (req, res) => {
+exports.getAllBMCTeams = async (req, res) => {
   try {
-    const submissions = await service.getSubmissionsByProgramName('BMC');
-    res.json(submissions);
+    const { page = 1, limit = 10 } = req.query;
+    const teams = await service.getAllBMCTeams(+page, +limit);
+    res.json(teams);
   } catch (err) {
-    res.status(500).json({ message: 'Gagal mengambil submission BMC' });
+    res.status(500).json({ message: 'Gagal mengambil tim BMC' });
   }
-}
+};
 
-exports.verifySubmission = async (req, res) => {
+exports.updateTeamStatus = async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
-    await service.verifySubmissionById(id);
-    res.json({ message: 'Submission diverifikasi' });
+    const teamId = parseInt(req.params.id);
+    const { status } = req.body;
+    const updated = await service.updateTeamStatus(teamId, status);
+    res.json({ message: 'Status tim diperbarui', updated });
   } catch (err) {
-    res.status(500).json({ message: 'Gagal verifikasi submission' });
+    res.status(500).json({ message: 'Gagal memperbarui status tim' });
   }
-}
+};
 
-exports.deleteSubmission = async (req, res) => {
+exports.postAnnouncementToTeamMembers = async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
-    await service.deleteSubmissionById(id);
-    res.json({ message: 'Submission dihapus' });
+    const teamId = parseInt(req.params.id);
+    const { message } = req.body;
+    await service.postAnnouncementToTeamMembers(teamId, message);
+    res.json({ message: 'Pengumuman dikirim ke anggota tim' });
   } catch (err) {
-    res.status(500).json({ message: 'Gagal hapus submission' });
+    res.status(500).json({ message: 'Gagal mengirim pengumuman' });
   }
-}
+};
 
-// Routes
-// router.get('/submission', authenticate, isProjectOfficer, getBMCSubmissions);
-// router.put('/submission/:id/verify', authenticate, isBMCAdmin, verifySubmission);
-// router.delete('/submission/:id', authenticate, isSuperAdmin, deleteSubmission);
+exports.postNotificationToAll = async (req, res) => {
+  try {
+    const { message } = req.body;
+    await service.postNotificationToAll(message);
+    res.json({ message: 'Notifikasi dikirim ke semua user' });
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal mengirim notifikasi' });
+  }
+};
 
-
+exports.searchTeam = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+    const result = await service.searchTeam(keyword);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal mencari tim' });
+  }
+};

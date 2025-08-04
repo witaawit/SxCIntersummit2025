@@ -42,6 +42,16 @@ const authorizeAccess = ({ roles = [], divisions = [] }) => {
   };
 };
 
+const authorizeInstitution = (...allowedInstitutions) => {
+  return (req, res, next) => {
+    if (!req.user || !allowedInstitutions.includes(req.user.institution)) {
+      return res.status(403).json({ message: "Forbidden: Institution not allowed" });
+    }
+    next();
+  };
+};
+
+
 const isAdmin = (req, res, next) => {
   if (req.user.role === "ADMIN" || req.user.role.endsWith("_ADMIN")) {
     return next();
@@ -56,11 +66,29 @@ const isProjectOfficer = (req, res, next) => {
   next();
 };
 
+const isSuperAdmin = (req, res, next) => {
+  if (req.user?.role === 'IT') return next();
+  return res.status(403).json({ message: 'Access denied: Super Admin only' });
+};
+
+const isPO = (req, res, next) => {
+  if (req.user?.role === 'PO') return next();
+  return res.status(403).json({ message: 'Access denied: PO only' });
+};
+
+const isBMCAdmin = (req, res, next) => {
+  if (req.user?.role === 'BMC_ADMIN') return next();
+  return res.status(403).json({ message: 'Access denied: BMC Admin only' });
+};
 module.exports = {
   authorizeRoles,
   authorizeDivisions,
   authorizeAccess,
   isAdmin,
   isProjectOfficer,
+  authorizeInstitution,
+  isSuperAdmin,
+  isPO,
+  isBMCAdmin
 };
      

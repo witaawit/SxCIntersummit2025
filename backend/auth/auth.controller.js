@@ -1,10 +1,12 @@
 // ini controller untuk autentikasi (login, register, verifikasi OTP, dan forgot-password)
-const { findUserByEmail, createUser, createTempUser, findTempEmail, sendOtpEmail, incrementAttempt, deleteTempUser, updateTempUser, findStaffByEmail, updateUserPassword } = require("./auth.service");
+const { findUserByEmail, createUser, createTempUser, findTempEmail, sendOtpEmail, incrementAttempt, deleteTempUser, updateTempUser, findStaffByEmail, updateUserPassword, verifyReferralCode, findReferralByCode, addTokenToBlacklist } = require("./auth.service");
 const { hashPassword, comparePassword } = require("../utils/hash");
 const {validatePassword} = require("../utils/password")
 const jwt = require("jsonwebtoken");
 const { secret, expiresIn } = require("../config/jwt");
 const MSG = require("../constants/messages");
+const { referral } = require("../config/db");
+
 // const prisma = require("../config/db");
 
 
@@ -15,22 +17,29 @@ const generateOTP = () => {
 
 // untuk register 
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
-
+  const { name, email, password, referral } = req.body;
   const existingUser = await findUserByEmail(email);
   const existingStaff = await findStaffByEmail(email);
-
   if (existingUser || existingStaff) {
     return res.status(400).json({ message: MSG.EMAIL_EXISTS });
   }
-
   const passwordError = await validatePassword(password);
   if (passwordError.valid == false) {
     return res.status(400).json({ message: passwordError.message });
   }
   const hashed = await hashPassword(password);
+  let referralData = null;
+
+  if (referral && referral.trim() !== "") {
+    referralData = await verifyReferralCode(referral);
+    if (!referralData.valid) {
+      return res.status(400).json({ message: referralData.message });
+    }
+  }
+
+  const referralCode = referralData ? referralData.data.code : null;
   const OTP = generateOTP();
-  const user = await createTempUser({ name, email, password: hashed, otp: OTP, purpose: 'register' }); // insert temp user dengan field name, email, password, dan otp
+  const user = await createTempUser({ name, email, password: hashed, referral: referralCode, otp: OTP, purpose: 'register' }); // insert temp user dengan field name, email, password, dan otp
 
   const result = await sendOtpEmail(email, OTP);
   if (!result.success) {
@@ -61,11 +70,11 @@ exports.login = async (req, res) => {
     ({ id, role, division } = staff);
     accountType = 'staff';
   }else {
-   ({ id, role } = user);
+   ({ id, role, institution } = user);
     accountType = 'user';
     division = null;
   }
-  const token = jwt.sign({ id, role, accountType, division }, secret, { expiresIn });
+  const token = jwt.sign({ id, role, accountType, division, institution }, secret, { expiresIn });
   res.json({ message: MSG.LOGIN_SUCCESS, token });
   try {
   } catch (error) {
@@ -127,11 +136,12 @@ exports.verifyOTP = async (req, res) => {
     return res.status(400).json({ message: MSG.OTP_EXPIRED });
   }
 
-  if (tempUser.purpose === 'register') {
+  if (tempUser.purpose === 'register') { 
     const user = await createUser({
       name: tempUser.name,
       email: tempUser.email,
       password: tempUser.password,
+      referralId: tempUser.referral
     });
 
     await deleteTempUser(email);
@@ -164,15 +174,28 @@ exports.sendNewOtp = async (req, res) => {
   res.status(200).json({ message: "OTP baru telah dikirim ke email Anda" });
 };
 
-
+exports.logout = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(400).json({ message: 'No token provided' });
+    
+    const token = authHeader.split(' ')[1];
+    
+    await addTokenToBlacklist(token);
+       
+    return res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
 
 // testing jwt token di postman untuk cek id dan role
 exports.getTokenData = (req, res) => {
   // req.user diisi dari middleware setelah verifikasi JWT
-  const { id, role, accountType, division } = req.user;
+  const { id, role, accountType, division, institution } = req.user;
 
   res.status(200).json({
     message: 'Data user dari token JWT',
-    user: { id, role, accountType, division }
+    user: { id, role, accountType, division, institution }
   });
 }
