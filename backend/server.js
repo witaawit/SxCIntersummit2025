@@ -12,6 +12,7 @@ app.use(express.json());
 app.use('/api', routes);
 app.use(require('./middlewares/errorHandler.middleware'));
 
+// PORT
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

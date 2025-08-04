@@ -46,15 +46,18 @@ exports.register = async (req, res) => {
     return res.status(500).json({ message: "Gagal mengirim OTP ke email" });
   }
 
-  res.status(201).json({
-    message: MSG.REGISTER_SUCCESS,
-    user,
-    note: "OTP terkirim ke email"
-  });
+    return res.status(201).json({
+      message: MSG.REGISTER_SUCCESS,
+      user: { name: tempUser.name, email: tempUser.email },
+      note: 'OTP has been sent to your email'
+    });
+
+  } catch (error) {
+    console.error('Register error:', error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
 };
 
-
-// untuk login
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   const user = await findUserByEmail(email);
@@ -78,39 +81,11 @@ exports.login = async (req, res) => {
   res.json({ message: MSG.LOGIN_SUCCESS, token });
   try {
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error('Login error:', error);
+    return res.status(500).json({ message: 'An error occurred on the server' });
   }
 };
 
-// untuk forgot password
-exports.forgotPassword = async (req, res) => {
-  const { email } = req.body;
-  const user = await findUserByEmail(email);
-
-  if (!user) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
-
-  const Otp = generateOTP();
-  await createTempUser({ email,otp: Otp, purpose: 'forgot_password' });
-
-  const result = await sendOtpEmail(email, Otp);
-  if (!result.success) {
-    return res.status(500).json({ message: "Gagal mengirim OTP ke email" });
-  }
-  res.status(200).json({ message: "OTP untuk reset password telah dikirim ke email Anda" });
-};
-
-exports.resetPassword = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await findUserByEmail(email);
-
-  if (!user) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
-
-  const hashed = await hashPassword(password);
-  await updateUserPassword(email, hashed);
-  res.status(200).json({ message: "Password berhasil direset" });
-};
-
-// untuk verifikasi OTP ketika register
 exports.verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
   const tempUser = await findTempEmail(email);
@@ -145,31 +120,37 @@ exports.verifyOTP = async (req, res) => {
     });
 
     await deleteTempUser(email);
-    return res.status(201).json({ message: MSG.OTP_VERIFIED, user });
-  } 
-  
-  if (tempUser.purpose === 'forgot_password') {
-    await deleteTempUser(email);
-    return res.status(200).json({ message: MSG.OTP_VERIFIED, user: { email } });
-  }
 
-  return res.status(400).json({ message: 'Invalid purpose for OTP verification' });
+    return res.status(200).json({
+      message: MSG.REGISTER_VERIFIED,
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name
+      }
+    });
+
+  } catch (error) {
+    console.error('Verify OTP error:', error);
+    return res.status(500).json({ message: 'An error occurred on the server' });
+  }
 };
 
-// untuk send otp baru ketika user ingin mengirim ulang OTP
 exports.sendNewOtp = async (req, res) => {
-  const { email } = req.body;
-  const tempUser = await findTempEmail(email);
+  try {
+    const { email } = req.body;
 
-  if (!tempUser) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
+    const tempUser = await findTempUserByEmail(email);
+    if (!tempUser) {
+      return res.status(404).json({ message: MSG.USER_NOT_FOUND });
+    }
 
-  const newOtp = generateOTP();
-  await updateTempUser(email, { otp: newOtp, otpTries: 0, otpSentAt: new Date() });
+    const newOtp = generateOTP();
+    const result = await resendOtpToUser(email, newOtp);
 
-  const result = await sendOtpEmail(email, newOtp);
-  if (!result.success) {
-    return res.status(500).json({ message: "Gagal mengirim OTP ke email" });
-  }
+    if (!result.success) {
+      return res.status(500).json({ message: 'Failed to send OTP email' });
+    }
 
   res.status(200).json({ message: "OTP baru telah dikirim ke email Anda" });
 };

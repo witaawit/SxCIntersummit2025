@@ -1,4 +1,5 @@
 const multer = require("multer");
+const storage = multer.memoryStorage();
 const path = require("path");
 
 function checkFileType(file, cb) {
@@ -13,6 +14,7 @@ function checkFileType(file, cb) {
 }
 
 const upload = multer({
+  storage, 
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
   },
@@ -20,5 +22,4 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024 // max 5MB
   }
 });
-
 module.exports = upload;
