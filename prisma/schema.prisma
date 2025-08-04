@@ -189,6 +189,7 @@ enum staff_role {
   PO
 }
 
+
 enum submission_stage {
   REGISTRATION
   SEMINAR
