@@ -8,45 +8,42 @@ datasource db {
 }
 
 model User {
-  id               Int            @id @default(autoincrement())
-  name             String
-  email            String         @unique
-  password         String
-  wa_number        String?
-  line_id          String?
-  role             String         @default("USER")
-  institution_name String?
-  major            String?
-  ktmPhoto         String?
-  institution      Institution?
-  createdAt        DateTime       @default(now())
-  Team             Team[]         @relation("TeamMembers")
-  leadingTeam      Team[]         @relation("TeamLeader")
-  payment          Payment[]
-  notification     Notification[]
-  tempIndividu     tempIndividu?
-  SeminarReg       SeminarReg[]
+  id                       Int            @id @default(autoincrement())
+  name                     String
+  email                    String         @unique(map: "User_email_key")
+  password                 String
+  wa_number                String?
+  line_id                  String?
+  role                     String         @default("USER")
+  major                    String?
+  ktmPhoto                 String?
+  institution              Institution?
+  createdAt                DateTime       @default(now())
+  institution_name         String?
+  notification             notification[]
+  payment                  payment[]
+  seminarreg               seminarreg[]
+  team_team_leaderIdTouser team[]         @relation("team_leaderIdTouser")
+  tempindividu             tempindividu?
+  team_teammembers         team[]         @relation("teammembers")
+
+  @@map("user")
 }
 
-model Staff {
-  id           Int            @id @default(autoincrement())
-  name         String
-  email        String         @unique
-  password     String
-  role         StaffRole
-  divisionId   Int
-  createdAt    DateTime       @default(now())
-  divisions    Division       @relation(fields: [divisionId], references: [id])
-  Notification Notification[]
+model status {
+  id                                   Int          @id @default(autoincrement())
+  description                          String
+  seminarreg_seminarreg_statusTostatus seminarreg[] @relation("seminarreg_statusTostatus")
+  team_team_statusTostatus             team[]       @relation("team_statusTostatus")
 }
 
-model Division {
+model division {
   id    Int     @id @default(autoincrement())
-  name  String  @unique
-  staff Staff[]
+  name  String  @unique(map: "Division_name_key")
+  staff staff[]
 }
 
-model Notification {
+model notification {
   id        Int      @id @default(autoincrement())
   userId    Int
   title     String
@@ -54,94 +51,33 @@ model Notification {
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
   staffId   Int
-  user      User     @relation(fields: [userId], references: [id])
-  staff     Staff    @relation(fields: [staffId], references: [id])
+  staff     staff    @relation(fields: [staffId], references: [id], map: "Notification_staffId_fkey")
+  user      User     @relation(fields: [userId], references: [id], map: "Notification_userId_fkey")
+
+  @@index([staffId], map: "Notification_staffId_fkey")
+  @@index([userId], map: "Notification_userId_fkey")
 }
 
-model tempIndividu {
-  id        Int      @id @default(autoincrement())
-  userId    Int      @unique
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-}
-
-model Team {
-  id             Int          @id @default(autoincrement())
-  name           String       @unique
-  code           String       @unique
-  createdAt      DateTime     @default(now())
-  leaderId       Int
-  programId      Int
-  status         Int          @default(1)
-  submissionId   Int?
-  programcode    Program      @relation(fields: [programId], references: [id])
-  statuscode     status       @relation(fields: [status], references: [id])
-  leader         User         @relation("TeamLeader", fields: [leaderId], references: [id])
-  members        User[]       @relation("TeamMembers")
-  submission     Submission?  @relation(fields: [submissionId], references: [id])
-  submissionTeam Submission[] @relation(name: "teamSubmission")
-  Payment        Payment[]
-}
-
-model status {
-  id          Int          @id @default(autoincrement())
-  description String
-  teams       Team[]
-  SeminarReg  SeminarReg[]
-}
-
-model Program {
-  id            Int          @id @default(autoincrement())
-  name          String       @unique
-  type          String
-  description   String?
-  teams         Team[]
-  registrations SeminarReg[]
-}
-
-model SeminarReg {
-  id           Int          @id @default(autoincrement())
-  userId       Int
-  programId    Int
-  status       Int
-  registeredAt DateTime     @default(now())
-  user         User         @relation(fields: [userId], references: [id])
-  program      Program      @relation(fields: [programId], references: [id])
-  statuscode   status       @relation(fields: [status], references: [id])
-  submission   Submission[]
-  payment      Payment[]
-}
-
-model Submission {
-  id           Int         @id @default(autoincrement())
-  seminarId    Int?
-  teamId       Int?
-  stage        stages
-  Promotion    String?
-  Task         String?
-  filePath     String
-  submittedAt  DateTime    @default(now())
-  registration SeminarReg? @relation(fields: [seminarId], references: [id])
-  teamcode     Team?       @relation(name: "teamSubmission", fields: [teamId], references: [id])
-  teams        Team[]
-}
-
-model Payment {
+model payment {
   id           Int         @id @default(autoincrement())
   userId       Int?
-  teamId       Int?
   SeminarRegId Int?
   filePath     String
   submittedAt  DateTime    @default(now())
-  user         User?       @relation(fields: [userId], references: [id])
-  team         Team?       @relation(fields: [teamId], references: [id])
-  SeminarReg   SeminarReg? @relation(fields: [SeminarRegId], references: [id])
+  teamId       Int?
+  seminarreg   seminarreg? @relation(fields: [SeminarRegId], references: [id], map: "Payment_SeminarRegId_fkey")
+  team         team?       @relation(fields: [teamId], references: [id], map: "Payment_teamId_fkey")
+  user         User?       @relation(fields: [userId], references: [id], map: "Payment_userId_fkey")
+
+  @@index([SeminarRegId], map: "Payment_SeminarRegId_fkey")
+  @@index([teamId], map: "Payment_teamId_fkey")
+  @@index([userId], map: "Payment_userId_fkey")
 }
 
-model PendingUserVerification {
+model pendinguserverification {
   id        Int      @id @default(autoincrement())
   name      String?
-  email     String   @unique
+  email     String   @unique(map: "pendinguserverification_email_key")
   password  String?
   otp       String
   otpSentAt DateTime @default(now())
@@ -149,10 +85,91 @@ model PendingUserVerification {
   purpose   String
 }
 
-enum stages {
-  REGISTRATION
-  SEMINAR
-  FINAL
+model program {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique(map: "Program_name_key")
+  type        String
+  description String?
+  seminarreg  seminarreg[]
+  team        team[]
+}
+
+model seminarreg {
+  id                               Int          @id @default(autoincrement())
+  userId                           Int
+  programId                        Int
+  status                           Int
+  registeredAt                     DateTime     @default(now())
+  payment                          payment[]
+  program                          program      @relation(fields: [programId], references: [id], map: "SeminarReg_programId_fkey")
+  status_seminarreg_statusTostatus status       @relation("seminarreg_statusTostatus", fields: [status], references: [id], map: "SeminarReg_status_fkey")
+  user                             User         @relation(fields: [userId], references: [id], map: "SeminarReg_userId_fkey")
+  submission                       submission[]
+
+  @@index([programId], map: "SeminarReg_programId_fkey")
+  @@index([status], map: "SeminarReg_status_fkey")
+  @@index([userId], map: "SeminarReg_userId_fkey")
+}
+
+model staff {
+  id           Int            @id @default(autoincrement())
+  name         String
+  email        String         @unique(map: "Staff_email_key")
+  password     String
+  role         staff_role
+  createdAt    DateTime       @default(now())
+  divisionId   Int
+  notification notification[]
+  division     division       @relation(fields: [divisionId], references: [id], map: "Staff_divisionId_fkey")
+
+  @@index([divisionId], map: "Staff_divisionId_fkey")
+}
+
+model submission {
+  id                                 Int              @id @default(autoincrement())
+  filePath                           String
+  submittedAt                        DateTime         @default(now())
+  Promotion                          String?
+  Task                               String?
+  seminarId                          Int?
+  stage                              submission_stage
+  teamId                             Int?
+  seminarreg                         seminarreg?      @relation(fields: [seminarId], references: [id], map: "Submission_seminarId_fkey")
+  team_submission_teamIdToteam       team?            @relation("submission_teamIdToteam", fields: [teamId], references: [id], map: "Submission_teamId_fkey")
+  team_team_submissionIdTosubmission team[]           @relation("team_submissionIdTosubmission")
+
+  @@index([seminarId], map: "Submission_seminarId_fkey")
+  @@index([teamId], map: "Submission_teamId_fkey")
+}
+
+model team {
+  id                                       Int          @id @default(autoincrement())
+  name                                     String       @unique(map: "Team_name_key")
+  code                                     String       @unique(map: "Team_code_key")
+  createdAt                                DateTime     @default(now())
+  leaderId                                 Int
+  programId                                Int
+  status                                   Int          @default(1)
+  submissionId                             Int?
+  payment                                  payment[]
+  submission_submission_teamIdToteam       submission[] @relation("submission_teamIdToteam")
+  user_team_leaderIdTouser                 User         @relation("team_leaderIdTouser", fields: [leaderId], references: [id], map: "Team_leaderId_fkey")
+  program                                  program      @relation(fields: [programId], references: [id], map: "Team_programId_fkey")
+  status_team_statusTostatus               status       @relation("team_statusTostatus", fields: [status], references: [id], map: "Team_status_fkey")
+  submission_team_submissionIdTosubmission submission?  @relation("team_submissionIdTosubmission", fields: [submissionId], references: [id], map: "Team_submissionId_fkey")
+  user_teammembers                         User[]       @relation("teammembers")
+
+  @@index([leaderId], map: "Team_leaderId_fkey")
+  @@index([programId], map: "Team_programId_fkey")
+  @@index([status], map: "Team_status_fkey")
+  @@index([submissionId], map: "Team_submissionId_fkey")
+}
+
+model tempindividu {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique(map: "tempIndividu_userId_key")
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], map: "tempIndividu_userId_fkey")
 }
 
 enum Institution {
@@ -160,14 +177,20 @@ enum Institution {
   HSC
 }
 
-enum StaffRole {
-  ADMIN
-  BMC_ADMIN
-  BCL_ADMIN
-  IBCC_ADMIN
-  IBPC_ADMIN
-  CHAMBERS_ADMIN
-  COMPANY_VISIT_ADMIN
-  IC_ADMIN
+enum staff_role {
+  Admin
+  BMC_Admin
+  BCL_Admin
+  IBCC_Admin
+  IBPC_Admin
+  CHAMBERS_Admin
+  COMPANY_VISIT_Admin
+  IC_Admin
   PO
+}
+
+enum submission_stage {
+  REGISTRATION
+  SEMINAR
+  FINAL
 }

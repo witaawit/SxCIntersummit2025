@@ -1,27 +1,17 @@
-const { StaffRole } = require('@prisma/client');
-
+const { staff_role } = require('@prisma/client');
 
 const AllAdminRoles = [
-  StaffRole.ADMIN,
-  StaffRole.BMC_ADMIN,
-  StaffRole.BCL_ADMIN,
-  StaffRole.IBCC_ADMIN,
-  StaffRole.IBPC_ADMIN,
-  StaffRole.CHAMBERS_ADMIN,
-  StaffRole.COMPANY_VISIT_ADMIN,
-  StaffRole.IC_ADMIN,
-  StaffRole.PO
+  staff_role.Admin,
+  staff_role.BMC_Admin,
+  staff_role.BCL_Admin,
+  staff_role.IBCC_Admin,
+  staff_role.IBPC_Admin,
+  staff_role.CHAMBERS_Admin,
+  staff_role.COMPANY_VISIT_Admin,
+  staff_role.IC_Admin,
+  staff_role.PO
 ];
 
 module.exports = {
-    AllAdminRoles
+  AllAdminRoles
 };
-
-/**  BMC_ADMIN
-  BCL_ADMIN
-  IBCC_ADMIN
-  IBPC_ADMIN
-  CHAMBERS_ADMIN
-  COMPANY_VISIT_ADMIN
-  IC_ADMIN
-  PO*/

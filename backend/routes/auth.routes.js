@@ -1,12 +1,9 @@
-// sudah ada auth routes di folder auth, jadi tidak perlu membuat ulang
-
 const express = require('express');
 const router = express.Router();
-const authController = require('./auth.controller');
+const authController = require('../auth/auth.controller');
 const { body } = require('express-validator');
-const { authenticate, isAdmin } = require('../middlewares/auth.middleware');
+const { authenticate } = require('../middlewares/auth.middleware');
 const validate = require('../middlewares/validation.middleware');
-
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const { secret, expiresIn } = require("../config/jwt");
@@ -17,7 +14,7 @@ const { secret, expiresIn } = require("../config/jwt");
 router.post('/register', [
   body('name').notEmpty().withMessage('Name must be filled in'),
   body('email').isEmail().withMessage('Invalid Email'),
-  body('password').isLength({ min: 6 }).withMessage('Password >=6 char')
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
 ], validate, authController.register);
 
 router.post('/login', [
@@ -30,13 +27,18 @@ router.post('/verifyOtp', [
   body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be 6 digits')
 ], validate, authController.verifyOTP);
 
-router.post('/sendnewOTP', [   // Kirim ulang OTP
+router.post('/sendnewOTP', [
   body('email').isEmail().withMessage('Invalid email')
 ], validate, authController.sendNewOtp);
 
-router.get('/me', authenticate, authController.getTokenData);  
+// =====================
+// Get Token Info (Authenticated User)
+// =====================
+router.get('/me', authenticate, authController.getTokenData);
 
-// Google OAuth Login
+// =====================
+// Google OAuth2
+// =====================
 router.get("/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get("/google/callback", 

@@ -1,5 +1,11 @@
 const MSG = require("../constants/messages");
-exports.validatePassword = async(password) => {
+
+/**
+ * Validate password strength
+ * @param {string} password
+ * @returns {Object} { valid: boolean, message?: string }
+ */
+exports.validatePassword = async (password) => {
   const minLength = 8;
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
@@ -23,4 +29,4 @@ exports.validatePassword = async(password) => {
   }
 
   return { valid: true };
-}
+};

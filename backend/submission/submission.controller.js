@@ -1,23 +1,41 @@
-// const prisma = require('../config/db');
+const prisma = require('../config/db');
+const MSG = require('../constants/messages');
 
-// exports.upload = async (req, res) => {
-//   try {
-//     const file = req.file;
-//     const registrationId = parseInt(req.body.registrationId);
+exports.upload = async (req, res) => {
+  try {
+    const file = req.file;
+    const registrationId = parseInt(req.body.registrationId);
 
-//     const path = `bmc/${Date.now()}-${file.originalname}`;
-//     const { error } = await supabase.storage.from('submissions').upload(path, file.buffer, { upsert: true });
-//     if (error) return res.status(500).json({ message: 'Upload gagal', error });
+    if (!file || !registrationId) {
+      return res.status(400).json({ success: false, message: MSG.VALIDATION_ERROR });
+    }
 
-//     const fileUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/submissions/${path}`;
+    const fileName = `bmc/${Date.now()}-${file.originalname}`;
+    const { error: uploadError } = await supabase.storage
+      .from('submissions')
+      .upload(fileName, file.buffer, { upsert: true });
 
-//     const submission = await prisma.submission.create({
-//       data: { registrationId, fileUrl }
-//     });
+    if (uploadError) {
+      return res.status(500).json({ success: false, message: MSG.SUBMIT_FAILED, error: uploadError });
+    }
 
-//     res.status(201).json({ message: 'Upload berhasil', submission });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Terjadi kesalahan saat upload' });
-//   }
-// };
+    const fileUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/submissions/${fileName}`;
+
+    const submission = await prisma.submission.create({
+      data: {
+        registrationId,
+        fileUrl,
+        uploadedAt: new Date()
+      }
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: MSG.SUBMIT_SUCCESS,
+      data: submission
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: MSG.INTERNAL_ERROR });
+  }
+};

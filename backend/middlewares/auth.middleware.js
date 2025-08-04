@@ -1,20 +1,43 @@
+const prisma = require('../config/db');
 const jwt = require("jsonwebtoken");
 const { secret } = require("../config/jwt");
 
-const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Token Not Found" });
-
+async function authenticate(req, res, next) {
   try {
-    const decoded = jwt.verify(token, secret);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    if (err.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Token expired" });
+    const authHeader = req.headers['authorization'];
+
+    if (!authHeader) {
+      return res.status(401).json({ message: 'Authorization header missing' });
     }
-    return res.status(401).json({ message: "Invalid Token" });
+
+    const tokenParts = authHeader.split(' ');
+    if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+      return res.status(401).json({ message: 'Authorization header malformed' });
+    }
+
+    const token = tokenParts[1];
+
+    const blacklisted = await prisma.blacklist.findUnique({ where: { token } });
+
+    if (blacklisted) {
+      if (new Date() > blacklisted.expiresAt) {
+        await prisma.blacklist.delete({ where: { token } });
+        return res.status(401).json({ message: 'Token expired and removed from blacklist' });
+      }
+      return res.status(401).json({ message: 'Token revoked (blacklisted)' });
+    }
+
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Invalid or expired token' });
+      }
+      req.user = decoded;
+      next();
+    });
+  } catch (error) {
+    console.error('Authenticate Middleware Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
-};
+}
 
 module.exports = { authenticate };
