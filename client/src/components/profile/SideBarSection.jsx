@@ -8,8 +8,9 @@ function Sidebar({ isOpen = true, className = "" }) {
     navigate("/");
   };
 
+  // Define goToEventsPage function
   const goToEventsPage = () => {
-    navigate("/dashboard/events");
+    navigate("/events");  // Ganti dengan path yang sesuai untuk halaman Events
   };
 
   return (
@@ -23,7 +24,7 @@ function Sidebar({ isOpen = true, className = "" }) {
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-purple-300/80 rounded-full flex items-center justify-center">
             <img
-              src="/images/dashboard/profile-icon.svg"
+              src="/images/profile/profile-icon.svg"
               alt="Profile"
               className="w-4 h-4"
             />
@@ -41,22 +42,28 @@ function Sidebar({ isOpen = true, className = "" }) {
           Main Menu
         </h4>
         <nav className="space-y-1">
-          {[
-            { icon: "home-icon.svg", label: "Home", action: goToHomePage },
-            { icon: "mini-profile.svg", label: "Profile" },
-            { icon: "bell-icon.svg", label: "Notifications", active: true },
-            { icon: "event-icon.svg", label: "Events", action: goToEventsPage },  // <-- Add action here
-            { icon: "question-icon.svg", label: "FAQs" },
-          ].map((item) => (
+          {[{
+            icon: "home-icon.svg", label: "Home", action: goToHomePage
+          },
+          {
+            icon: "mini-profile.svg", label: "Profile"
+          },
+          {
+            icon: "bell-icon.svg", label: "Notifications", active: true
+          },
+          {
+            icon: "event-icon.svg", label: "Events", action: goToEventsPage  // <-- Add action here
+          },
+          {
+            icon: "question-icon.svg", label: "FAQs"
+          }].map((item) => (
             <button
               key={item.label}
               onClick={item.action || undefined} // Add the onClick event
-              className={`w-full flex items-center text-sm text-white hover:bg-white/10 p-1.5 rounded ${
-                item.active ? "bg-white/20" : ""
-              }`}
+              className={`w-full flex items-center text-sm text-white hover:bg-white/10 p-1.5 rounded ${item.active ? "bg-white/20" : ""}`}
             >
               <img
-                src={`/images/dashboard/${item.icon}`}
+                src={`/images/profile/${item.icon}`}
                 alt={item.label}
                 className="w-3.5 h-3.5 mr-2"
               />
@@ -73,7 +80,7 @@ function Sidebar({ isOpen = true, className = "" }) {
           className="w-full bg-green-500/90 hover:bg-green-500 text-white py-1.5 text-sm rounded flex items-center justify-center"
         >
           <img
-            src="/images/dashboard/home-icon.svg"
+            src="/images/profile/home-icon.svg"
             alt="Home"
             className="w-4 h-4 mr-1.5"
           />
@@ -84,7 +91,7 @@ function Sidebar({ isOpen = true, className = "" }) {
           className="w-full bg-red-500/80 hover:bg-red-500 text-white py-1.5 text-sm rounded flex items-center justify-center"
         >
           <img
-            src="/images/dashboard/logout-icon.svg"
+            src="/images/profile/logout-icon.svg"
             alt="Logout"
             className="w-4 h-4 mr-1.5"
           />

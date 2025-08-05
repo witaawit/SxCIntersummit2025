@@ -10,8 +10,8 @@ import AppLayout from "@/layout/AppLayout";
 import RoleLayout from "@/layout/RoleLayout";
 import { SignupPage } from "./main/SignUpPage";
 import { AboutSection } from "./main/AboutSection";
-import Dashboard from "./main/Dashboard";
-import NotificationCard from "@/components/dashboard/NotificationCard";
+import Profile from "./main/Profile";
+import NotificationCard from "@/components/profile/NotificationCard";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
       },
             {
         path: "profile",
-        element: <Dashboard />,
+        element: <Profile />,
                 children: [
           {
             path: "notifications",

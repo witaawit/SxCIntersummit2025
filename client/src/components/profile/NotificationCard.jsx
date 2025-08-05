@@ -65,7 +65,7 @@ function NotificationCard() {
                   {/* Icon */}
                   <div className="w-8 h-8 flex items-center justify-center flex-shrink-0"> {/* Reduced icon size */}
                     <img
-                      src="/images/dashboard/pin.svg" // Path to your custom pin icon
+                      src="/images/profile/pin.svg" // Path to your custom pin icon
                       alt="Notification Bell"
                       className="w-4 h-4" // Reduced icon size
                     />
@@ -90,7 +90,7 @@ function NotificationCard() {
                   </div>
                   <button className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1 flex-shrink-0"> {/* Reduced padding */}
                     <img
-                      src="/images/dashboard/mail-icon.svg" // Path for the mail icon
+                      src="/images/profile/mail-icon.svg" // Path for the mail icon
                       alt="Mail Icon"
                       className="w-4 h-4" // Reduced icon size
                     />

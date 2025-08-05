@@ -1,8 +1,8 @@
 import React from "react";
-import SideBarSection from "@/components/dashboard/SideBarSection";
-import NotificationCard from "@/components/dashboard/NotificationCard";
+import SideBarSection from "@/components/profile/SideBarSection";
+import NotificationCard from "@/components/profile/NotificationCard";
 
-const Dashboard = () => {
+const Profile = () => {
   return (
     <div className="bg-transparent flex w-full">
       <div
@@ -22,4 +22,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Profile;
