@@ -10,6 +10,8 @@ import AppLayout from "@/layout/AppLayout";
 import RoleLayout from "@/layout/RoleLayout";
 import { SignupPage } from "./main/SignUpPage";
 import { AboutSection } from "./main/AboutSection";
+import Dashboard from "./main/Dashboard";
+import NotificationCard from "@/components/dashboard/NotificationCard";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -26,6 +28,16 @@ export const router = createBrowserRouter([
       {
         path: "about",
         element: <AboutSection />,
+      },
+            {
+        path: "profile",
+        element: <Dashboard />,
+                children: [
+          {
+            path: "notifications",
+            element: <NotificationCard />, // <== Halaman Notifications
+          },
+        ],
       },
 
       // Other public routes that are based on role can be added here

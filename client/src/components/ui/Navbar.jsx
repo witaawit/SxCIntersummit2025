@@ -1,136 +1,96 @@
-import useAuth from "@/hooks/Guest/useAuth";
-import { useUserStore } from "@/store/userStore";
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useUserStore();
-  const [isVisible, setIsVisible] = useState(true); // Control navbar visibility
-  const lastScrollY = useRef(0);
-  const ticking = useRef(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
-  const [show, setShow] = useState(true);
-  const { logout } = useAuth();
-  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Scroll handling logic
+  if (["/login", "/signup", "/dashboard"].includes(location.pathname)) {
+    return null;
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (!ticking.current) {
-        // throttle with rAF
-        window.requestAnimationFrame(() => {
-          if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-            // scrolling down
-            setIsVisible(false);
-          } else if (currentScrollY < lastScrollY.current) {
-            // scrolling up
-            setIsVisible(true);
-          }
-          lastScrollY.current = currentScrollY;
-          ticking.current = false;
-        });
-        ticking.current = true;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
       }
+
+      setLastScrollY(currentScrollY);
     };
 
-    // Sembunyikan navbar di halaman login dan signup
-    if (["login", "register", "about"].includes(location.pathname)) {
-      setShow(false);
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // no dependencies -> adds listener once
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   return (
     <nav
-      className={`grid grid-cols-3 px-6 py-3 bg-gradient-to-r bg-[#C6FF894D] bg-opacity-30 border border-[#abdc57] rounded-full shadow-[0_0_8px_#abdc57] w-full max-w-[90%] mx-auto mt-6 fixed left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md transition-all duration-800 ${
-        isVisible ? "top-0" : "-top-32" // Increased the value of -top-32 for better hide effect
-      } ${show ? "block" : "hidden"}`}
+      className={`grid grid-cols-3 px-3 py-2 bg-gradient-to-r bg-[#C6FF894D] bg-opacity-30 border border-[#abdc57] rounded-full shadow-[0_0_8px_#abdc57] w-full max-w-[90%] mx-auto mt-3 fixed left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md transition-all duration-300 ${
+        isVisible ? "top-3" : "-top-20"
+      }`}
     >
       {/* Left - Logo */}
-      <Link to="/">
-        <div className="flex items-center space-x-2">
-          <img
-            src="images/logo-sxc-putih-2-2.png"
-            alt="Logo"
-            className="w-9 h-9"
-          />
-          <span className="text-white font-semibold text-sm"></span>
-        </div>
-      </Link>
+      <div className="flex items-center">
+        <img
+          src="images/logo-sxc-putih-2-2.png"
+          alt="Logo"
+          className="w-7 h-7"
+        />
+      </div>
 
       {/* Center - Menu */}
-      <div className="hidden md:flex justify-center items-center space-x-6">
+      <div className="hidden md:flex justify-center items-center space-x-4">
         <Link
           to="/"
-          className="text-white hover:text-[#abdc57] text-sm font-medium"
+          className="text-white hover:text-[#abdc57] text-xs font-medium"
         >
           Home
         </Link>
         <Link
           to="/about"
-          className="text-white hover:text-[#abdc57] text-sm font-medium"
+          className="text-white hover:text-[#abdc57] text-xs font-medium"
         >
           About
         </Link>
         <div className="relative group">
-          <button className="text-white hover:text-[#abdc57] text-sm font-medium flex items-center">
-            Program <span className="ml-1">▾</span>
+          <button className="text-white hover:text-[#abdc57] text-xs font-medium flex items-center">
+            Program <span className="ml-1 text-xs">▾</span>
           </button>
         </div>
         <a
           href="#merch"
-          className="text-white hover:text-[#abdc57] text-sm font-medium"
+          className="text-white hover:text-[#abdc57] text-xs font-medium"
         >
           Merchandise
         </a>
       </div>
 
       {/* Right - Buttons */}
-      {!user ? (
-        <div className="hidden md:flex items-center justify-end space-x-2 ">
-          <Link to="/login">
-            <button className="cursor-pointer text-sm px-4 py-2 border border-[#AEE67F] font-bold text-[#AEE67F] rounded-lg hover:bg-[#42582b]">
-              Log in
-            </button>
-          </Link>
-          <Link to="/register">
-            <button className="text-sm px-4 cursor-pointer py-2 bg-[#AEE67F] font-semibold  text-black rounded-lg hover:opacity-90">
-              Sign up
-            </button>
-          </Link>
-        </div>
-      ) : (
-        <>
-          <div onClick={logout} className="justify-end space-x-2 flex ">
-            <button className="text-sm px-4 cursor-pointer py-2 bg-[#AEE67F] font-semibold  text-black rounded-lg hover:opacity-90">
-              Log Out
-            </button>
-          </div>
-          <div
-            onClick={() => navigate("/profile/")}
-            className="justify-end space-x-2 flex "
-          >
-            <button className="text-sm px-4 cursor-pointer py-2 bg-[#AEE67F] font-semibold  text-black rounded-lg hover:opacity-90">
-              Profile
-            </button>
-          </div>
-        </>
-      )}
+      <div className="hidden md:flex items-center justify-end space-x-2">
+        <Link to="/login">
+          <button className="text-xs px-3 py-1 border border-[#AEE67F] font-bold text-[#AEE67F] rounded-lg hover:bg-[#42582b]">
+            Log in
+          </button>
+        </Link>
+        <Link to="/signup">
+          <button className="text-xs px-3 py-1 bg-[#AEE67F] font-semibold text-black rounded-lg hover:opacity-90">
+            Sign up
+          </button>
+        </Link>
+      </div>
 
       {/* Mobile Menu Hamburger */}
       <button
-        className="md:hidden absolute right-5 top-4 text-white" // Positioning the hamburger button to the right
+        className="md:hidden absolute right-4 top-3 text-white"
         onClick={toggleMenu}
       >
         <svg
@@ -138,7 +98,7 @@ const Navbar = () => {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          className="w-6 h-6"
+          className="w-5 h-5"
         >
           <path
             strokeLinecap="round"
@@ -153,16 +113,16 @@ const Navbar = () => {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } absolute top-0 left-0 w-full h-screen bg-black bg-opacity-30  z-10 md:hidden md:col-span-0`}
+        } fixed inset-0 bg-black bg-opacity-70 z-40 md:hidden`}
       >
-        <div className="flex justify-end p-4">
-          <button onClick={toggleMenu}>
+        <div className="absolute top-4 right-4">
+          <button onClick={toggleMenu} className="text-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              className="w-6 h-6 text-white"
+              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -173,29 +133,31 @@ const Navbar = () => {
             </svg>
           </button>
         </div>
-        <div className="flex flex-col items-center space-y-4">
-          <Link to="/" className="text-white text-lg">
+        <div className="flex flex-col items-center justify-center h-full space-y-6">
+          <Link to="/" className="text-white text-base" onClick={toggleMenu}>
             Home
           </Link>
-          <Link to="/about" className="text-white text-lg">
+          <Link to="/about" className="text-white text-base" onClick={toggleMenu}>
             About
           </Link>
-          <a href="#program" className="text-white text-lg">
+          <a href="#program" className="text-white text-base" onClick={toggleMenu}>
             Program
           </a>
-          <a href="#merch" className="text-white text-lg">
+          <a href="#merch" className="text-white text-base" onClick={toggleMenu}>
             Merchandise
           </a>
-          <Link to="/login">
-            <button className="text-sm px-4 py-1 bg-[#2e3e15] text-white rounded-lg hover:bg-[#42582b]">
-              Log in
-            </button>
-          </Link>
-          <Link to="/signup">
-            <button className="text-sm px-4 py-1 bg-[#abdc57] text-black rounded-lg hover:opacity-90">
-              Sign up
-            </button>
-          </Link>
+          <div className="flex space-x-4 mt-4">
+            <Link to="/login" onClick={toggleMenu}>
+              <button className="text-xs px-4 py-1 bg-[#2e3e15] text-white rounded-lg hover:bg-[#42582b]">
+                Log in
+              </button>
+            </Link>
+            <Link to="/signup" onClick={toggleMenu}>
+              <button className="text-xs px-4 py-1 bg-[#abdc57] text-black rounded-lg hover:opacity-90">
+                Sign up
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
