@@ -1,36 +1,43 @@
-import type { registerschema } from "@/types/schema";
+import BackButton from "@/components/ui/BackButton";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import useAuth from "@/hooks/Guest/useAuth";
+import { registerschema } from "@/types/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { MoveLeft } from "lucide-react";
 import React, { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
+import type { z } from "zod";
 
 export type FormFields = z.infer<typeof registerschema>;
 export const SignupPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    referralCode: "",
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormFields>({
+    resolver: zodResolver(registerschema),
   });
 
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const { registerAccount, registerLoading } = useAuth();
+  const handleRegister: SubmitHandler<FormFields> = async (data) => {
+    console.log(data);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
+    // registerAccount({
+    //   name: data.name,
+    //   email: data.email,
+    //   password: data.pass,
+    //   referalCode: data.referralCode,
+    //   remember: false,
+    // });
   };
 
   const handleLoginClick = () => {
-    console.log("Navigate to login");
+    // console.log("Navigate to login");
   };
 
   const handleTermsClick = () => {
-    console.log("Open terms and conditions");
+    // console.log("Open terms and conditions");
   };
 
   return (
@@ -45,9 +52,7 @@ export const SignupPage = () => {
         />
 
         {/* Back Button */}
-        <div className="cursor-pointer absolute top-15 left-15 z-10">
-          <MoveLeft size={40} />
-        </div>
+        <BackButton />
 
         {/* Gray Overlay (Left Half) */}
         <div className="absolute w-full md:w-1/2 left-0 h-full bg-[#d9d9d9]" />
@@ -95,7 +100,7 @@ export const SignupPage = () => {
         {/* Registration Form */}
         <div className="w-full max-w-[95vw] sm:max-w-[400px] lg:max-w-[456px] mr-10 max-md:mr-0 ">
           <div className="relative text bg-opacity-20 backdrop-blur-sm rounded-xl p-6 sm:p-8 ">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(handleRegister)}>
               {/* Login/Register Tabs */}
               <div className="flex justify-center mb-6 sm:mb-8">
                 <div className="flex items-center">
@@ -120,12 +125,18 @@ export const SignupPage = () => {
                   </label>
                   <input
                     type="text"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    {...register("name")}
                     placeholder="Enter your full name"
                     className="w-full h-[42px] text-black bg-[#f2f2f2] rounded-[10px] border-[0.5px] border-[#aeaeae] px-4 py-2 text-sm focus:outline-none focus:border-[#8257a9]"
                     required
                   />
+                  <p
+                    className={`${
+                      errors.name ? "text-red-600" : "text-transparent"
+                    }`}
+                  >
+                    {errors.name?.message || "a"}
+                  </p>
                 </div>
 
                 {/* Email Field */}
@@ -135,12 +146,19 @@ export const SignupPage = () => {
                   </label>
                   <input
                     type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    {...register("email")}
                     placeholder="Enter your email address"
                     className="w-full h-[42px] text-black bg-[#f2f2f2] rounded-[10px] border-[0.5px] border-[#aeaeae] px-4 py-2 text-sm focus:outline-none focus:border-[#8257a9]"
                     required
                   />
+
+                  <p
+                    className={`${
+                      errors.email ? "text-red-600" : "text-transparent"
+                    }`}
+                  >
+                    {errors.email?.message || "a"}
+                  </p>
                 </div>
 
                 {/* Password Field */}
@@ -150,14 +168,18 @@ export const SignupPage = () => {
                   </label>
                   <input
                     type="password"
-                    value={formData.password}
-                    onChange={(e) =>
-                      handleInputChange("password", e.target.value)
-                    }
+                    {...register("pass")}
                     placeholder="Create your password"
                     className="w-full h-[42px] text-black bg-[#f2f2f2] rounded-[10px] border-[0.5px] border-[#aeaeae] px-4 py-2 text-sm focus:outline-none focus:border-[#8257a9]"
                     required
                   />
+                  <p
+                    className={`${
+                      errors.pass ? "text-red-600" : "text-transparent"
+                    }`}
+                  >
+                    {errors.pass?.message || "a"}
+                  </p>
                 </div>
 
                 {/* Confirm Password Field */}
@@ -167,14 +189,18 @@ export const SignupPage = () => {
                   </label>
                   <input
                     type="password"
-                    value={formData.confirmPassword}
-                    onChange={(e) =>
-                      handleInputChange("confirmPassword", e.target.value)
-                    }
+                    {...register("pass2")}
                     placeholder="Confirm your password"
                     className="w-full h-[42px] text-black bg-[#f2f2f2] rounded-[10px] border-[0.5px] border-[#aeaeae] px-4 py-2 text-sm focus:outline-none focus:border-[#8257a9]"
                     required
                   />
+                  <p
+                    className={`${
+                      errors.pass2 ? "text-red-600" : "text-transparent"
+                    }`}
+                  >
+                    {errors.pass2?.message || "a"}
+                  </p>
                 </div>
 
                 {/* Referral Code Field */}
@@ -184,13 +210,17 @@ export const SignupPage = () => {
                   </label>
                   <input
                     type="text"
-                    value={formData.referralCode}
-                    onChange={(e) =>
-                      handleInputChange("referralCode", e.target.value)
-                    }
+                    {...register("referralCode")}
                     placeholder="Enter your referral code"
                     className="w-full h-[42px] text-black bg-[#f2f2f2] rounded-[10px] border-[0.5px] border-[#aeaeae] px-4 py-2 text-sm focus:outline-none focus:border-[#8257a9]"
                   />
+                  <p
+                    className={`${
+                      errors.referralCode ? "text-red-600" : "text-transparent"
+                    }`}
+                  >
+                    {errors.referralCode?.message || "a"}
+                  </p>
                 </div>
               </div>
 
@@ -212,9 +242,10 @@ export const SignupPage = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full h-12 mt-6 rounded-[10px] bg-gradient-to-b from-[#562780] to-[#8257a9] text-white font-bold hover:opacity-90 transition-opacity"
+                className="w-full h-12 mt-6 cursor-pointer rounded-[10px] bg-gradient-to-b from-[#562780] to-[#8257a9] text-white font-bold hover:opacity-90 transition-opacity"
               >
-                Register Account
+                {" "}
+                {registerLoading ? <LoadingSpinner /> : "Register Account"}
               </button>
 
               {/* Login Link */}
@@ -223,7 +254,7 @@ export const SignupPage = () => {
                 <button
                   type="button"
                   onClick={handleLoginClick}
-                  className="text-blue-800 underline hover:opacity-80"
+                  className="text-blue-800 cursor-pointer underline hover:opacity-80"
                 >
                   Login Now!
                 </button>

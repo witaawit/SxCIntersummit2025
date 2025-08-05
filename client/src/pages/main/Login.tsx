@@ -5,6 +5,11 @@ import type { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MoveLeft } from "lucide-react";
+import { GoogleLogin } from "@react-oauth/google";
+import MediaPartner from "@/components/homePage/MediaPartner";
+import BackButton from "@/components/ui/BackButton";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import useAuth from "@/hooks/Guest/useAuth";
 
 export type FormFields = z.infer<typeof loginSchema>;
 
@@ -22,6 +27,8 @@ const Login = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
+  const { login, loginLoading } = useAuth();
+
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   // React Hook Form
@@ -34,7 +41,7 @@ const Login = () => {
   });
 
   const handleLogin: SubmitHandler<FormFields> = async (data) => {
-    console.log("Login attempt with:", data);
+    login({ email: data.email, password: data.password, remember: false });
   };
 
   const handleGoogleSignIn = () => {
@@ -51,21 +58,21 @@ const Login = () => {
     setResetStep("request");
   };
 
-  const handleResetRequest = (e) => {
+  const handleResetRequest = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Reset requested for:", resetEmail);
     // In a real app, you would send the email and then:
     setResetStep("verify");
   };
 
-  const handleVerifyCode = (e) => {
+  const handleVerifyCode = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Verifying code:", resetCode);
     // Verify the code with your backend
     setResetStep("new_password");
   };
 
-  const handlePasswordReset = (e) => {
+  const handlePasswordReset = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newPassword !== confirmNewPassword) {
       alert("Passwords don't match!");
@@ -80,7 +87,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center w-full    sm:p-0">
+    <div className="min-h-screen  flex flex-col items-center w-full    sm:p-0">
       {/* Main Container */}
       <div className="relative w-full flex justify-around  items-center  min-h-[800px] sm:min-h-screen bg-white overflow-hidden rounded-lg sm:rounded-none max-md:justify-center max-md:min-h-screen">
         {/* Background Image */}
@@ -90,10 +97,7 @@ const Login = () => {
           src="/images/pexels-tanishka-357202-973226-1.png"
         />
 
-        {/* Back Button */}
-        <div className="cursor-pointer absolute top-15 left-15 z-10">
-          <MoveLeft size={40} />
-        </div>
+        <BackButton />
 
         {/* Gray Overlay (Left Half) */}
         <div className="absolute w-full md:w-1/2 left-0 h-full bg-[#d9d9d9]" />
@@ -164,13 +168,12 @@ const Login = () => {
                     Login
                   </button>
                   <Link
-                    to="/signup"
+                    to="/register"
                     className="text-[#737186] text-[24px] sm:text-[29.4px] leading-[41.2px] font-bold hover:opacity-80 transition-opacity"
                   >
                     Register
                   </Link>
                 </nav>
-
                 {/* Email Field */}
                 <div className="mb-4 sm:mb-6">
                   <label className="block text-white text-sm sm:text-[14.1px] font-bold mb-1">
@@ -191,7 +194,6 @@ const Login = () => {
                     {errors.email?.message || "a"}
                   </p>
                 </div>
-
                 {/* Password Field */}
                 <div className="mb-4 sm:mb-6">
                   <label className="block text-white text-sm sm:text-[14.1px] font-bold mb-1">
@@ -225,21 +227,19 @@ const Login = () => {
                   <button
                     type="button"
                     onClick={handleForgotPassword}
-                    className="mt-1 text-xs text-white cursor-pointer font-bold hover:underline float-right"
+                    className="mt-1 text-xs text-white cursor-pointer font-bold hover:underline float-right mb-5"
                   >
                     Forgot Password?
                   </button>
                 </div>
-
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full h-12 mt-4 bg-gradient-to-b from-[#562780] to-[#8257a9] text-white font-bold text-xs sm:text-sm rounded-[10px] hover:opacity-90 cursor-pointer"
+                  className={`w-full h-12 mt-4 bg-gradient-to-b from-[#562780] to-[#8257a9] text-white font-bold text-xs sm:text-sm rounded-[10px] hover:opacity-90 cursor-pointer flex items-center justify-center `}
+                  disabled={loginLoading}
                 >
-                  {/* <svg class="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24"></svg> */}
-                  Log In
+                  {loginLoading ? <LoadingSpinner /> : "Log In"}
                 </button>
-
                 {/* Divider */}
                 <div className="relative flex items-center justify-center my-6">
                   <div className="flex-grow border-t border-gray-300"></div>
@@ -248,23 +248,14 @@ const Login = () => {
                   </span>
                   <div className="flex-grow border-t border-gray-300"></div>
                 </div>
-
-                {/* Google Login */}
-                <button
-                  type="button"
-                  onClick={handleGoogleSignIn}
-                  className="w-full h-12 bg-white rounded-[7px] border border-[#bababa] hover:bg-gray-100 flex items-center justify-center gap-2"
-                >
-                  <img
-                    src="/images/google-logo.png"
-                    alt="Google logo"
-                    className="w-4 h-4"
-                  />
-                  <span className="text-black text-xs font-bold">
-                    Sign in with Google
-                  </span>
-                </button>
-
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    console.log(credentialResponse);
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
                 {/* Register Link */}
                 <p className="mt-6 text-center text-xs text-white">
                   Belum punya akun?{" "}
@@ -332,8 +323,6 @@ const Login = () => {
                     <input
                       id="email-input"
                       type="email"
-                      value={email}
-                      onChange={handleEmailChange}
                       placeholder="Ex: abc@example.com"
                       className="w-full [font-family:'Inter-Italic',Helvetica] italic text-black text-base tracking-[-0.18px] bg-transparent border-none outline-none placeholder:text-[#c7c7c7]"
                       required
@@ -514,6 +503,7 @@ const Login = () => {
           )}
         </div>
       </div>
+      <MediaPartner />
     </div>
   );
 };

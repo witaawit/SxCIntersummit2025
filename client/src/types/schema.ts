@@ -7,13 +7,28 @@ export const loginSchema = z.object({
   password: z.string().nonempty("Password must be filled."),
 });
 
-export const registerBuyerSchema = z.object({
-  name: z.string().nonempty("Nama Depan harus diisi."),
-  email: z
-    .string()
-    .email("Invalid email address.")
-    .nonempty("Email must be filled."),
-  pass: z.string().nonempty("Kata Sandi harus diisi."),
-  pass2: z.string().nonempty("Konfirmasi Kata Sandi harus diisi."),
-  referralCode: z.string().optional(),
-});
+export const registerschema = z
+  .object({
+    name: z.string().nonempty("First name is required."),
+    email: z
+      .string()
+      .email("Invalid email address.")
+      .nonempty("Email is required."),
+    pass: z
+      .string()
+      .nonempty("Password is required.")
+      .min(8, "Password must be at least 8 characters long.")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+      .regex(/\d/, "Password must contain at least one number.")
+      .regex(
+        /[!@#$%^&*]/,
+        "Password must contain at least one special character (!@#$%^&*)."
+      ),
+    pass2: z.string().nonempty("Password confirmation is required."),
+    referralCode: z.string().optional(),
+  })
+  .refine((data) => data.pass === data.pass2, {
+    message: "Passwords do not match.",
+    path: ["pass2"],
+  });

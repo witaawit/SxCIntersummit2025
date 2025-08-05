@@ -12,6 +12,8 @@ import { SignupPage } from "./main/SignUpPage";
 import { AboutSection } from "./main/AboutSection";
 
 export const router = createBrowserRouter([
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <SignupPage /> },
   {
     path: "/",
     element: <AppLayout />,
@@ -20,14 +22,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "register",
-        element: <SignupPage />,
       },
       {
         path: "about",
