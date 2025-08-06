@@ -37,10 +37,10 @@ const Navbar = () => {
         <Link to="/about" className="text-white hover:text-[#6A7337] text-xs font-medium">About</Link>
         
         <div className="relative group">
-          <Link to="/program/bmc" className="text-white hover:text-[#6A7337] text-xs font-medium flex items-center py-2">
+          <Link to="/program/bmc" className="text-white hover:text-[#abdc57] text-xs font-medium flex items-center py-2">
             Program <span className="ml-1 text-xs">▾</span>
           </Link>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 bg-black/70 border border-[#6A7337] rounded-lg shadow-lg w-40 z-50 hidden group-hover:block">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 bg-black/70 border border-[#abdc57] rounded-lg shadow-lg w-40 z-50 hidden group-hover:block">
             <div className="py-1">
                 <Link to="/program/bmc" className="block px-4 py-2 text-sm text-white hover:bg-[#42582b]">1. Program BMC</Link>
                 <Link to="/program/bcl" className="block px-4 py-2 text-sm text-white hover:bg-[#42582b]">2. Program BCL</Link>
@@ -52,7 +52,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <a href="https://linktr.ee/mnf.summit25" className="text-white hover:text-[#6A7337] text-xs font-medium">Merchandise</a>
+        <a href="https://linktr.ee/mnf.summit25" className="text-white hover:text-[#abdc57] text-xs font-medium">Merchandise</a>
       </div>
 
       <div className="hidden md:flex items-center justify-end space-x-2">

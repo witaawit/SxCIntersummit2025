@@ -4,7 +4,7 @@
 @theme {
   --color-navbarGreen: #abdc57;
 
-  --animate-arrowFadeUp: arrowFadeUp 1.5s ease-in-out;
+  --animate-arrowFadeUp: arrowFadeUp 1.5s ease-in-out infinite;
   --animate-scrollLeft: scrollLeft 30s linear infinite;
   --animate-scrollRight: scrollRight 30s linear infinite;
 
@@ -37,10 +37,10 @@
   }
 
   @keyframes scrollRight {
-    from: {
-      left: -350px;
+    0% {
+      left: "-350px";
     }
-    to: {
+    100% {
       left: 100%;
     }
   }
@@ -186,5 +186,60 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.scrollLeftAnimation {
+  animation: scrollLeft 30s linear infinite;
+}
+
+.scrollRightAnimation {
+  animation: scrollRight 30s linear infinite;
+}
+
+.marquee {
+  --marquee-duration: 30s;
+  position: relative;
+  width: 100%;
+}
+
+/* the track is twice the visible content (original + duplicate) */
+.marquee-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content; /* allow the flex row to grow naturally */
+  align-items: center;
+  animation: marquee-scroll var(--marquee-duration) linear infinite;
+  will-change: transform;
+}
+
+/* reverse direction for the second marquee */
+.marquee-reverse .marquee-track {
+  animation-direction: reverse;
+}
+
+/* each item doesn't shrink and keeps its size */
+.marquee-item {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+/* Keyframes: move the track left by 50% of its width (because we duplicated) */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Small responsive tweak: reduce item size on small screens */
+@media (max-width: 640px) {
+  .marquee-item img {
+    height: 48px;
   }
 }

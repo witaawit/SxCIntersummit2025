@@ -24,10 +24,7 @@ export const FooterSection = () => {
   }
 
   return (
-    <div
-      style={{ backgroundImage: "url('./images/homepage/footerAssets.svg')" }}
-      className="bg-cover bg-center w-full z-20"
-    >
+    <div>
       <div
         className="relative min-h-[60vh] backdrop-blur-4xl px-6 py-8 max-w-full border-t-2 border-white"
         style={{

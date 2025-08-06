@@ -18,7 +18,7 @@ const FAQHomePage = () => {
       <Accordion
         type="single"
         collapsible
-        className="w-full max-md:px-5  mt-10   flex-col  flex "
+        className="w-full max-md:px-5 z-20 mt-10   flex-col  flex "
         defaultValue="item-1"
       >
         <AccordionItem
@@ -44,7 +44,9 @@ const FAQHomePage = () => {
           value="item-2"
           className="rounded-xl px-4 text-xl mt-3 bg-white text-[#330084]"
         >
-          <AccordionTrigger>Shipping Details</AccordionTrigger>
+          <AccordionTrigger className="cursor-pointer">
+            Shipping Details
+          </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-4 text-balance">
             <p>
               We offer worldwide shipping through trusted courier partners.
@@ -61,7 +63,9 @@ const FAQHomePage = () => {
           value="item-3"
           className="rounded-xl px-4 text-xl mt-3 bg-white text-[#330084]"
         >
-          <AccordionTrigger>Return Policy</AccordionTrigger>
+          <AccordionTrigger className="cursor-pointer">
+            Return Policy
+          </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-4 text-balance">
             <p>
               We stand behind our products with a comprehensive 30-day return

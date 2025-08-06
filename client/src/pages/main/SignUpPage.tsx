@@ -3,8 +3,6 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import useAuth from "@/hooks/Guest/useAuth";
 import { registerschema } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MoveLeft } from "lucide-react";
-import React, { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 import type { z } from "zod";
@@ -261,6 +259,69 @@ export const SignupPage = () => {
               </p>
             </form>
           </div>
+        </div>
+
+        <div className="relative bg-white rounded-xl p-6 sm:p-8 shadow-lg">
+          <div className="flex justify-start mb-4">
+            <button
+              type="button"
+              className="w-10 h-10 bg-white rounded-full hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center"
+              onClick={handleCancelReset}
+            >
+              <img
+                className="w-6 h-[15px]"
+                alt="Back icon"
+                src="/images/back-icon.svg" // Make sure this path is correct
+              />
+            </button>
+          </div>
+          <form onSubmit={handleVerifyCode}>
+            {/* Header Section - Centered */}
+            <div className="mb-6 text-center">
+              <h1 className="[font-family:'Inter-Bold',Helvetica] font-bold text-[#8257a9] text-[32px] tracking-[-0.35px]">
+                Enter Verification Code
+              </h1>
+              <p className="[font-family:'Inter-Regular',Helvetica] font-normal text-black text-base tracking-[-0.18px]">
+                We sent a verification code to your email
+                <span className="font-bold"></span>
+              </p>
+            </div>
+
+            {/* Verification Code Input - Consistent with Email Form */}
+            <div className="flex flex-col items-center mb-6 w-full">
+              <div className="w-[343px] text-left">
+                <label
+                  htmlFor="code-input"
+                  className="[font-family:'Inter-Regular',Helvetica] font-normal text-black text-base tracking-[-0.18px] mb-1"
+                >
+                  Verification Code <span className="text-red-600">*</span>
+                </label>
+              </div>
+              <div className="flex w-[343px] items-center gap-[15px] px-5 py-4 rounded-2xl border-[1.5px] border-solid border-[#8257a9] focus-within:ring-2 focus-within:ring-[#8257a9]">
+                <input
+                  id="code-input"
+                  type="text"
+                  value={resetCode}
+                  onChange={(e) => setResetCode(e.target.value)}
+                  placeholder="Enter 6-digit code"
+                  className="w-full [font-family:'Inter-Regular',Helvetica] text-black text-base tracking-[-0.18px] bg-transparent border-none outline-none placeholder:text-[#c7c7c7] placeholder:italic"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Buttons - Consistent with Email Form */}
+            <div className="flex flex-col items-center gap-4 w-full">
+              <button
+                type="submit"
+                className="flex w-[343px] justify-center py-4 bg-[#8257a9] rounded-2xl hover:bg-[#6d4a8f] transition-colors duration-200"
+              >
+                <span className="[font-family:'Inter-Bold',Helvetica] font-bold text-white text-base tracking-[-0.18px]">
+                  Verify Code
+                </span>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

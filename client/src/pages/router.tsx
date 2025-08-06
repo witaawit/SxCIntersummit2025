@@ -31,10 +31,14 @@ export const router = createBrowserRouter([
         path: "about",
         element: <AboutSection />,
       },
-            {
+      {
         path: "profile",
         element: <Profile />,
-                children: [
+        children: [
+          {
+            index: true,
+            element: <UserProfilePage />, // <== Halaman Notifications
+          },
           {
             path: "notifications",
             element: <NotificationCard />, // <== Halaman Notifications
