@@ -9,6 +9,7 @@ import Landing from "./main/Landing";
 import AppLayout from "@/layout/AppLayout";
 import RoleLayout from "@/layout/RoleLayout";
 import { SignupPage } from "./main/SignUpPage";
+import UserProfilePage from "./user/UserProfilePage";
 import { AboutSection } from "./main/AboutSection";
 import Profile from "./main/Profile";
 import NotificationCard from "@/components/profile/NotificationCard";
