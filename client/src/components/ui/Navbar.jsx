@@ -62,12 +62,43 @@ const Navbar = () => {
           About
         </Link>
         <div className="relative group">
-          <button className="text-white hover:text-[#abdc57] text-xs font-medium flex items-center">
+          <Link
+            to="/program"
+            className="text-white hover:text-[#abdc57] text-xs font-medium flex items-center"
+          >
             Program <span className="ml-1 text-xs">▾</span>
-          </button>
+          </Link>
+          <div className="absolute top-15/12 left-1/2 -translate-x-1/2 hidden group-hover:block bg-black/70 border border-[#abdc57] rounded-lg shadow-lg pt-2 w-40 z-50">
+            <div className="py-1">
+              <Link
+                to="/program/bmc"
+                className="block px-4 py-2 text-sm text-white hover:bg-[#42582b]"
+              >
+                1. Program BMC
+              </Link>
+              <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
+                2. Soon
+              </span>
+              <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
+                3. Soon
+              </span>
+              <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
+                4. Soon
+              </span>
+              <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
+                5. Soon
+              </span>
+              <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
+                6. Soon
+              </span>
+              <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
+                7. Soon
+              </span>
+            </div>
+          </div>
         </div>
         <a
-          href="#merch"
+          href="https://linktr.ee/mnf.summit25"
           className="text-white hover:text-[#abdc57] text-xs font-medium"
         >
           Merchandise
@@ -140,10 +171,10 @@ const Navbar = () => {
           <Link to="/about" className="text-white text-base" onClick={toggleMenu}>
             About
           </Link>
-          <a href="#program" className="text-white text-base" onClick={toggleMenu}>
+          <Link to="/program" className="text-white text-base" onClick={toggleMenu}>
             Program
-          </a>
-          <a href="#merch" className="text-white text-base" onClick={toggleMenu}>
+          </Link>
+          <a href="https://linktr.ee/mnf.summit25" className="text-white text-base" onClick={toggleMenu}>
             Merchandise
           </a>
           <div className="flex space-x-4 mt-4">

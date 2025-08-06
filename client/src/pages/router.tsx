@@ -12,6 +12,8 @@ import { SignupPage } from "./main/SignUpPage";
 import { AboutSection } from "./main/AboutSection";
 import Profile from "./main/Profile";
 import NotificationCard from "@/components/profile/NotificationCard";
+import programRouter from "./program/programRouter";
+import ProgramLayout from "@/layout/ProgramLayout";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -39,6 +41,18 @@ export const router = createBrowserRouter([
           },
         ],
       },
+
+      {
+        path: "program",
+        element: <ProgramLayout />,
+      },
+
+      // {
+      //   path: "program",
+      //   element: <Main />,
+      //   children: [
+      //     {
+      // }
 
       // Other public routes that are based on role can be added here
       // For example: /admin/dasboard, /user/profile, etc.
