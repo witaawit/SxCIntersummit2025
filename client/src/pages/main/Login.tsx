@@ -87,7 +87,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen  flex flex-col items-center w-full    sm:p-0">
+    <div className="min-h-screen  flex flex-col items-center w-full   sm:p-0">
       {/* Main Container */}
       <div className="relative w-full flex justify-around  items-center  min-h-[800px] sm:min-h-screen bg-white overflow-hidden rounded-lg sm:rounded-none max-md:justify-center max-md:min-h-screen">
         {/* Background Image */}
@@ -503,7 +503,6 @@ const Login = () => {
           )}
         </div>
       </div>
-      <MediaPartner />
     </div>
   );
 };
