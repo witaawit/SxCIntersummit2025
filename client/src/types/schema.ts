@@ -32,3 +32,28 @@ export const registerschema = z
     message: "Passwords do not match.",
     path: ["pass2"],
   });
+export const resetPass = z
+  .object({
+    newPass: z
+      .string()
+      .nonempty("New Password is required.")
+      .min(8, "New Password must be at least 8 characters long.")
+      .regex(
+        /[A-Z]/,
+        "New Password must contain at least one uppercase letter."
+      )
+      .regex(
+        /[a-z]/,
+        "New Password must contain at least one lowercase letter."
+      )
+      .regex(/\d/, "New Password must contain at least one number.")
+      .regex(
+        /[!@#$%^&*]/,
+        "New Password must contain at least one special character (!@#$%^&*)."
+      ),
+    pass2: z.string().nonempty("Password confirmation is required."),
+  })
+  .refine((data) => data.newPass === data.pass2, {
+    message: "Passwords do not match.",
+    path: ["pass2"],
+  });

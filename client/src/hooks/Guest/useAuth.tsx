@@ -20,7 +20,7 @@ const useAuth = () => {
     queryFn: async () => {
       const res = await API.get("/auth/me");
       console.log(res.data);
-      setUser(res.data); // Store in Zustand
+      setUser(res.data.user); // Store in Zustand
       return res.data;
     },
     retry: false,
@@ -92,17 +92,74 @@ const useAuth = () => {
   });
 
   const logout = () => {
-    console.log("someht");
-
     // await API.post("/auths/logout");
     sessionStorage.removeItem("token");
     clearUser();
     queryClient.removeQueries({ queryKey: ["me"] });
     toast.success("Logout successful");
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
+
+    navigate("/login");
   };
+
+  const requestResetPassword = useMutation({
+    mutationFn: async (email: string) => {
+      console.log(email);
+
+      const res = await API.post("/auth/forgotPassword", { email });
+      console.log(res);
+
+      return res;
+    },
+    onSuccess: () => {
+      toast.success("OTP sent to your email");
+    },
+    onError: (e) => {
+      if (axios.isAxiosError(e) && e.response) {
+        const errorMessage = e.response.data.message || "Failed to verify OTP";
+        toast.error(errorMessage);
+      } else {
+        toast.error("Something went wrong, please try again later.");
+      }
+    },
+  });
+
+  const verifyOTP = useMutation({
+    mutationFn: async (formDetails: { email: string; otp: string }) => {
+      const res = await API.post("/auth/verify-otp", formDetails);
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success("OTP verified successfully");
+      navigate("/");
+    },
+    onError: (e) => {
+      if (axios.isAxiosError(e) && e.response) {
+        const errorMessage = e.response.data.message || "Failed to verify OTP";
+        toast.error(errorMessage);
+      } else {
+        toast.error("Something went wrong, please try again later.");
+      }
+    },
+  });
+
+  const passwordMutation = useMutation({
+    mutationFn: async (data: { oldPassword: string; newPassword: string }) => {
+      const res = await API.post("/auth/resetPassword", data);
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success("Password changed successfully");
+    },
+    onError: (e) => {
+      if (axios.isAxiosError(e) && e.response) {
+        const errorMessage =
+          e.response.data.message || "Failed to change password";
+        toast.error(errorMessage);
+      } else {
+        toast.error("Something went wrong, please try again later.");
+      }
+    },
+  });
 
   useEffect(() => {
     const token =
@@ -137,6 +194,12 @@ const useAuth = () => {
     loginLoading: loginMutation.isPending,
     registerAccount: registerMutation.mutateAsync,
     registerLoading: registerMutation.isPending,
+    requestResetPassword: requestResetPassword.mutateAsync,
+    requestResetPasswordLoading: requestResetPassword.isPending,
+    verifyOTP: verifyOTP.mutateAsync,
+    verifyOTPLoading: verifyOTP.isPending,
+    changePassword: passwordMutation.mutateAsync,
+    changePasswordLoading: passwordMutation.isPending,
     logout,
     isAuthLoading,
     isAuthError: isError,

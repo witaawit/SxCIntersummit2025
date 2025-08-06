@@ -12,6 +12,7 @@ import { SignupPage } from "./main/SignUpPage";
 import { AboutSection } from "./main/AboutSection";
 import Profile from "./main/Profile";
 import NotificationCard from "@/components/profile/NotificationCard";
+import UserProfilePage from "./user/UserProfilePage";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -29,10 +30,14 @@ export const router = createBrowserRouter([
         path: "about",
         element: <AboutSection />,
       },
-            {
+      {
         path: "profile",
         element: <Profile />,
-                children: [
+        children: [
+          {
+            index: true,
+            element: <UserProfilePage />, // <== Halaman Notifications
+          },
           {
             path: "notifications",
             element: <NotificationCard />, // <== Halaman Notifications

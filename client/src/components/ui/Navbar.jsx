@@ -1,3 +1,5 @@
+import { useUserStore } from "@/store/userStore";
+import { User } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -7,6 +9,8 @@ const Navbar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
 
+  const { user } = useUserStore();
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -14,7 +18,7 @@ const Navbar = () => {
   if (["/login", "/signup", "/dashboard"].includes(location.pathname)) {
     return null;
   }
-
+  console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -76,16 +80,27 @@ const Navbar = () => {
 
       {/* Right - Buttons */}
       <div className="hidden md:flex items-center justify-end space-x-2">
-        <Link to="/login">
-          <button className="text-xs px-3 py-1 border border-[#AEE67F] font-bold text-[#AEE67F] rounded-lg hover:bg-[#42582b]">
-            Log in
-          </button>
-        </Link>
-        <Link to="/signup">
-          <button className="text-xs px-3 py-1 bg-[#AEE67F] font-semibold text-black rounded-lg hover:opacity-90">
-            Sign up
-          </button>
-        </Link>
+        {!user ? (
+          <>
+            <Link to="/login">
+              <button className="text-xs px-3 py-1 border border-[#AEE67F] font-bold text-[#AEE67F] rounded-lg hover:bg-[#42582b]">
+                Log in
+              </button>
+            </Link>
+            <Link to="/signup">
+              <button className="text-xs px-3 py-1 bg-[#AEE67F] font-semibold text-black rounded-lg hover:opacity-90">
+                Sign up
+              </button>
+            </Link>{" "}
+          </>
+        ) : (
+          <Link to="/profile">
+            <div className="flex items-center space-x-2 text-white">
+              <User />
+              <p>{user?.name}</p>
+            </div>
+          </Link>
+        )}
       </div>
 
       {/* Mobile Menu Hamburger */}
@@ -137,13 +152,25 @@ const Navbar = () => {
           <Link to="/" className="text-white text-base" onClick={toggleMenu}>
             Home
           </Link>
-          <Link to="/about" className="text-white text-base" onClick={toggleMenu}>
+          <Link
+            to="/about"
+            className="text-white text-base"
+            onClick={toggleMenu}
+          >
             About
           </Link>
-          <a href="#program" className="text-white text-base" onClick={toggleMenu}>
+          <a
+            href="#program"
+            className="text-white text-base"
+            onClick={toggleMenu}
+          >
             Program
           </a>
-          <a href="#merch" className="text-white text-base" onClick={toggleMenu}>
+          <a
+            href="#merch"
+            className="text-white text-base"
+            onClick={toggleMenu}
+          >
             Merchandise
           </a>
           <div className="flex space-x-4 mt-4">
