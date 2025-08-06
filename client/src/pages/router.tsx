@@ -45,14 +45,8 @@ export const router = createBrowserRouter([
       {
         path: "program",
         element: <ProgramLayout />,
+        children: programRouter, // <== Nested program routes
       },
-
-      // {
-      //   path: "program",
-      //   element: <Main />,
-      //   children: [
-      //     {
-      // }
 
       // Other public routes that are based on role can be added here
       // For example: /admin/dasboard, /user/profile, etc.

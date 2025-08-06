@@ -1,5 +1,5 @@
 import React from 'react';
-import BMC from '/images/programpage/bmc/BMC.png';
+import BCL from '/images/programpage/bcl/BCL.png';
 
 const BmcDefinition: React.FC = () => {
   return (
@@ -9,10 +9,10 @@ const BmcDefinition: React.FC = () => {
           <div className="text-white space-y-8">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What is Business Model Canvas?
+                What is Business Competition Launchpad?
               </h2>
               <p className="text-lg leading-relaxed">
-                Business Model Canvas is a competition exclusively for high school students, to showcase their entrepreneurial skills and business acumen. Students are challenged to present their innovative business idea that can solve the problems around them.
+                Business Competition Launchpad is a free competition class program for college and high school students aiming to excel in business case and plan competitions. This opportunity helps students develop strategic thinking, problem-solving, and business planning skills, preparing them to succeed in competitive business challenges.
               </p>
             </div>
             <div>
@@ -20,13 +20,13 @@ const BmcDefinition: React.FC = () => {
                 Who can Participate?
               </h2>
               <p className="text-lg leading-relaxed">
-                This competition is open to all high school students from Year 10 to Year 12. You may join the competition either as an individual or as part of a team.
+                This competition is open to all high school students from Year 10 to Year 12 and university students. 
               </p>
             </div>
           </div>
           <div className="flex justify-center">
             <img
-              src={BMC}
+              src={BCL}
               alt="Business Model Canvas competition card"
               className="w-full max-w-md md:max-w-none rounded-2xl shadow-2xl"
             />

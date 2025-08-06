@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BookletIcon from '/images/programpage/bmc/booklet.svg';
-import BMCCompetition from '/images/programpage/bmc/BMCCompetition.png';
-import RegisterationClosing from '/images/programpage/bmc/RegisterationClosing.png';
+import BCLCompetition from '/images/programpage/bcl/BCLCompetition.png';
+import RegisterationClosing from '/images/programpage/bcl/RegisterationClosing.png';
 
 const formatTime = (time: number): string =>
   time < 10 ? `0${time}` : String(time);
@@ -57,7 +57,7 @@ const Registration: React.FC = () => {
     <section className="min-h-200 w-full flex items-center justify-center p-4 font-rubik">
       <div className="flex flex-col items-center justify-center text-center">
         <img
-          src={BMCCompetition}
+          src={BCLCompetition}
           alt="Business Model Canvas Competition"
           className="mb-6 w-full max-w-4xl"
         />
