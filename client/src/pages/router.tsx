@@ -13,6 +13,7 @@ import { AboutSection } from "./main/AboutSection";
 import Profile from "./main/Profile";
 import NotificationCard from "@/components/profile/NotificationCard";
 import UserProfilePage from "./user/UserProfilePage";
+import AllPrograms from "./program/Program";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: "about",
         element: <AboutSection />,
+      },
+      {
+        path: "programs", 
+        element: <AllPrograms />,
       },
       {
         path: "profile",

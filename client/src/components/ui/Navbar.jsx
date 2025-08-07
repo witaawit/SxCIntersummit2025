@@ -65,11 +65,12 @@ const Navbar = () => {
         >
           About
         </Link>
-        <div className="relative group">
-          <button className="text-white hover:text-[#abdc57] text-xs font-medium flex items-center">
-            Program <span className="ml-1 text-xs">▾</span>
-          </button>
-        </div>
+        <Link
+          to="/programs"
+          className="text-white hover:text-[#abdc57] text-xs font-medium"
+        >
+          Program
+        </Link>
         <a
           href="#merch"
           className="text-white hover:text-[#abdc57] text-xs font-medium"
