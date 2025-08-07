@@ -1,4 +1,5 @@
 import { useUserStore } from "@/store/userStore";
+import { User } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -103,7 +104,7 @@ const Navbar = () => {
         {!user ? (
           <>
             <Link to="/login">
-              <button className="text-xs px-3 py-1 border border-[#AEE67F] font-bold text-[#AEE67F] rounded-lg hover:bg-[#42582b]">
+              <button className="cursor-pointer text-xs px-3 py-1 border border-[#AEE67F] font-bold text-[#AEE67F] rounded-lg hover:bg-[#42582b]">
                 Log in
               </button>
             </Link>
@@ -115,7 +116,7 @@ const Navbar = () => {
           </>
         ) : (
           <Link to="/profile">
-            <div className="flex items-center space-x-2 text-white">
+            <div className="cursor-pointer flex items-center space-x-2 text-white">
               <User />
               <p>{user?.name}</p>
             </div>

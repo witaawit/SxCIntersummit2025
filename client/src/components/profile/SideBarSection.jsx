@@ -1,6 +1,6 @@
 import useAuth from "@/hooks/Guest/useAuth";
 import { useUserStore } from "@/store/userStore";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar({ isOpen = true, className = "" }) {
@@ -9,6 +9,12 @@ function Sidebar({ isOpen = true, className = "" }) {
   const { logout } = useAuth();
   const { user } = useUserStore();
 
+  // useEffect(() => {
+  //   if (user === null) {
+  //     navigate("/unauthorized");
+  //   }
+  // }, [user]);
+
   const goToHomePage = () => {
     navigate("/");
   };
@@ -16,6 +22,10 @@ function Sidebar({ isOpen = true, className = "" }) {
     navigate("/profile/faq");
   };
   const goToProfilePage = () => {
+    navigate("/profile/home");
+  };
+
+  const goToEditProfilePage = () => {
     navigate("/profile/");
   };
 
@@ -42,9 +52,9 @@ function Sidebar({ isOpen = true, className = "" }) {
           </div>
           <div className="min-w-0">
             <h3 className="text-white text-sm font-medium truncate">
-              {user.name}
+              {user?.name || ""}
             </h3>
-            <p className="text-white/60 text-[10px]">{user.email}</p>
+            <p className="text-white/60 text-[10px]">{user?.email || ""}</p>
           </div>
         </div>
       </div>
@@ -63,7 +73,7 @@ function Sidebar({ isOpen = true, className = "" }) {
             {
               icon: "mini-profile.svg",
               label: "Profile",
-              action: goToProfilePage,
+              action: goToEditProfilePage,
             },
             {
               icon: "bell-icon.svg",

@@ -86,8 +86,6 @@ const Login = () => {
   };
 
   const handleVerifySuccess = () => {
-    console.log("skibii");
-
     setResetStep("new_password");
   };
 
@@ -272,7 +270,7 @@ const Login = () => {
                   {/* Register Link */}
                   <p className="mt-6 text-center text-xs text-white">
                     Belum punya akun?{" "}
-                    <Link to="/signup">
+                    <Link to="/register">
                       <button
                         type="button"
                         className="text-blue-800 underline hover:text-blue-600 cursor-pointer"
@@ -370,14 +368,12 @@ const Login = () => {
                 onCancel={handleCancelReset}
               />
             ) : (
-              resetStep === "new_password" && (
-                // NEW PASSWORD FORM
-                <ResetPasswordForm
-                  email={resetEmail}
-                  onSuccess={handleResetSuccess}
-                  onCancel={handleCancelReset}
-                />
-              )
+              // NEW PASSWORD FORM
+              <ResetPasswordForm
+                email={resetEmail}
+                onSuccess={handleResetSuccess}
+                onCancel={handleCancelReset}
+              />
             )}
           </div>
         </div>

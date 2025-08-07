@@ -1,12 +1,9 @@
 import useAuth from "@/hooks/Guest/useAuth";
-import type { email } from "node_modules/zod/dist/types/v4/core/regexes";
-import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import { resetPass } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { FormMethod } from "react-router-dom";
 import type { z } from "zod";
 export type FormFields = z.infer<typeof resetPass>;
 type ResetPasswordProps = {
@@ -30,7 +27,10 @@ const ResetPasswordForm = ({
 
   const handleResetPass: SubmitHandler<FormFields> = async (data) => {
     try {
-      const res = await changePassword(data);
+      const res = await changePassword({
+        oldPassword: data.newPass,
+        newPassword: data.newPass2,
+      });
       if (res.status === 200) {
         toast.success("Password changed successfully");
         onSuccess();
@@ -117,17 +117,17 @@ const ResetPasswordForm = ({
             <input
               id="confirm-password"
               type="password"
-              {...register("pass2")}
+              {...register("newPass2")}
               placeholder="Confirm new password"
               className="w-full [font-family:'Inter-Regular',Helvetica] text-black text-base tracking-[-0.18px] bg-transparent border-none outline-none placeholder:text-[#c7c7c7] placeholder:italic"
               required
             />
             <p
               className={`${
-                errors.pass2 ? "text-red-600" : "text-transparent"
+                errors.newPass2 ? "text-red-600" : "text-transparent"
               }`}
             >
-              {errors.pass2?.message || "a"}
+              {errors.newPass2?.message || "a"}
             </p>
           </div>
         </div>

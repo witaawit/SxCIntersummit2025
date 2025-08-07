@@ -114,7 +114,7 @@ exports.login = async (req, res) => {
   // res.json({ message: MSG.LOGIN_SUCCESS });
 
   const token = jwt.sign(
-    { id, name, role, accountType, division, Institution },
+    { id, name, email, role, accountType, division, Institution },
     secret,
     { expiresIn }
   );
@@ -258,11 +258,11 @@ exports.logout = async (req, res) => {
 // testing jwt token di postman untuk cek id dan role
 exports.getTokenData = (req, res) => {
   // req.user diisi dari middleware setelah verifikasi JWT
-  const { id, name, secret, role, accountType, division, institution } =
+  const { id, email, name, secret, role, accountType, division, institution } =
     req.user;
 
   res.status(200).json({
     message: "Data user dari token JWT",
-    user: { id, name, role, accountType, division, institution },
+    user: { id, email, name, role, accountType, division, institution },
   });
 };

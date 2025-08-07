@@ -6,7 +6,6 @@ import { useUserStore } from "@/store/userStore";
 const Profile = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  console.log(user);
 
   useEffect(() => {
     if (user === null) {

@@ -103,10 +103,7 @@ const useAuth = () => {
 
   const requestResetPassword = useMutation({
     mutationFn: async (email: string) => {
-      console.log(email);
-
       const res = await API.post("/auth/forgotPassword", { email });
-      console.log(res);
 
       return res;
     },

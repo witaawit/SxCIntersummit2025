@@ -116,7 +116,7 @@ const VerifyOTP = ({ onSuccess, onCancel, email }: VerifyOTPProps) => {
           <button
             onClick={() => handleVerifyCode()}
             type="submit"
-            className="flex w-[343px] justify-center py-4 bg-[#8257a9] rounded-2xl hover:bg-[#6d4a8f] transition-colors duration-200"
+            className="cursor-pointer flex w-[343px] justify-center py-4 bg-[#8257a9] rounded-2xl hover:bg-[#6d4a8f] transition-colors duration-200"
           >
             <span className="[font-family:'Inter-Bold',Helvetica] font-bold text-white text-base tracking-[-0.18px]">
               {verifyOTPLoading ? <LoadingSpinner /> : "Verify Code"}

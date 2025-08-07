@@ -4,6 +4,8 @@ import React, { useState } from "react";
 const UserProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const [isSMA, setIsSMA] = useState(false);
+
   return (
     <div className="mx-auto px-6 py-6">
       {" "}
@@ -51,7 +53,10 @@ const UserProfilePage = () => {
               </React.Fragment>
             ))}
           </div>
-          <button className="font-bold text-white bg-[#5EC7ED] cursor-pointer rounded-lg py-2 px-8 mt-4 hover:bg-[#6f4c8f] transition duration-200">
+          <button
+            type="submit"
+            className="font-bold text-white bg-[#5EC7ED] cursor-pointer rounded-lg py-2 px-8 mt-4 hover:bg-[#6f4c8f] transition duration-200"
+          >
             Save Changes
           </button>
         </div>

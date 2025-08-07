@@ -16,6 +16,7 @@ import NotificationCard from "@/components/profile/NotificationCard";
 import Unauthorized from "./main/Unauthorized";
 import ProgramLayout from "@/layout/ProgramLayout";
 import programRouter from "./program/programRouter";
+import ProfileHome from "./user/ProfileHome";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -39,7 +40,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "home",
-            element: <UserProfilePage />, // <== Halaman Notifications
+            element: <ProfileHome />, // <== Halaman Notifications
           },
           {
             index: true,
