@@ -79,7 +79,7 @@ const Registration: React.FC = () => {
           <button className="px-8 py-3 rounded-xl bg-[#5EC7ED] text-white font-bold text-lg shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#5EC7ED]/50">
             Register Now
           </button>
-          <button className="px-8 py-3 rounded-xl bg-[#98d532] text-white font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#98D532]/50">
+          <button className="px-8 py-3 rounded-xl bg-[#98D532] text-white font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#98D532]/50">
             <img
               src={"/images/programpage/bcl/BookletIcon.png"}
               alt="Booklet Icon"
