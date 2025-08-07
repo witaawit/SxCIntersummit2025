@@ -1,12 +1,10 @@
 import { loginSchema } from "@/types/schema";
-import React, { useState } from "react";
-import { Link, type CreateRequestHandlerFunction } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import type { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MoveLeft, Trophy } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
-import MediaPartner from "@/components/homePage/MediaPartner";
 import BackButton from "@/components/ui/BackButton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import useAuth from "@/hooks/Guest/useAuth";
@@ -39,7 +37,9 @@ const Login = () => {
   } = useAuth();
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-
+  useEffect(() => {
+    console.log(resetStep);
+  }, [resetStep]);
   // React Hook Form
   const {
     handleSubmit,
@@ -87,16 +87,6 @@ const Login = () => {
 
   const handleVerifySuccess = () => {
     setResetStep("new_password");
-  };
-
-  const handlePasswordReset = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (newPassword !== confirmNewPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
-    // Submit to your backend
-    setResetStep(null); // Return to login
   };
 
   const handleCancelReset = () => {
@@ -280,7 +270,7 @@ const Login = () => {
                   {/* Register Link */}
                   <p className="mt-6 text-center text-xs text-white">
                     Belum punya akun?{" "}
-                    <Link to="/signup">
+                    <Link to="/register">
                       <button
                         type="button"
                         className="text-blue-800 underline hover:text-blue-600 cursor-pointer"
@@ -380,6 +370,7 @@ const Login = () => {
             ) : (
               // NEW PASSWORD FORM
               <ResetPasswordForm
+                email={resetEmail}
                 onSuccess={handleResetSuccess}
                 onCancel={handleCancelReset}
               />

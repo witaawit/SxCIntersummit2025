@@ -4,6 +4,8 @@ import React, { useState } from "react";
 const UserProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const [isSMA, setIsSMA] = useState(false);
+
   return (
     <div className="mx-auto px-6 py-6">
       {" "}
@@ -40,13 +42,21 @@ const UserProfilePage = () => {
                 <input
                   type={i.type}
                   id={i.schemaName}
-                  className="mt-1 block w-full rounded-full border border-gray-300 text-black font-bold bg-gray-100 py-2 pl-4  focus:border-[#8257A9] focus:ring-[#8257A9] outline-none "
+                  className={`mt-1 block w-full rounded-full border border-gray-300 text-black font-bold bg-gray-100 py-2 pl-4  focus:border-[#8257A9] focus:ring-[#8257A9] outline-none ${
+                    !isEditing
+                      ? "cursor-not-allowed opacity-70"
+                      : "cursor-pointer"
+                  }`}
                   placeholder={i.placeHolder}
+                  disabled={!isEditing}
                 />
               </React.Fragment>
             ))}
           </div>
-          <button className="font-bold text-white bg-[#5EC7ED] cursor-pointer rounded-lg py-2 px-8 mt-4 hover:bg-[#6f4c8f] transition duration-200">
+          <button
+            type="submit"
+            className="font-bold text-white bg-[#5EC7ED] cursor-pointer rounded-lg py-2 px-8 mt-4 hover:bg-[#6f4c8f] transition duration-200"
+          >
             Save Changes
           </button>
         </div>

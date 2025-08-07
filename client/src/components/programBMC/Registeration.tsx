@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import BookletIcon from '/images/programpage/bmc/booklet.svg';
-import BMCCompetition from '/images/programpage/bmc/BMCCompetition.png';
-import RegisterationClosing from '/images/programpage/bmc/RegisterationClosing.png';
+import React, { useState, useEffect } from "react";
+import BMCCompetition from "/images/programpage/bmc/BMCCompetition.png";
+import RegisterationClosing from "/images/programpage/bmc/RegisterationClosing.png";
 
 const formatTime = (time: number): string =>
   time < 10 ? `0${time}` : String(time);
@@ -17,8 +16,8 @@ const Registration: React.FC = () => {
     const diff = +targetDate - +new Date();
     if (diff <= 0) return {};
     return {
-      days:    Math.floor(diff / (1000 * 60 * 60 * 24)),
-      hours:   Math.floor((diff / (1000 * 60 * 60)) % 24),
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
       minutes: Math.floor((diff / 1000 / 60) % 60),
       seconds: Math.floor((diff / 1000) % 60),
     };
@@ -81,7 +80,11 @@ const Registration: React.FC = () => {
             Register Now
           </button>
           <button className="px-8 py-3 rounded-xl bg-[#98D532] text-white font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#98D532]/50">
-            <img src={BookletIcon} alt="Booklet Icon" className="w-6 h-6" />
+            <img
+              src={"/images/programpage/bcl/BookletIcon.png"}
+              alt="Booklet Icon"
+              className="w-6 h-6"
+            />
             View Booklet
           </button>
         </div>

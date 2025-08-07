@@ -51,9 +51,9 @@ export const resetPass = z
         /[!@#$%^&*]/,
         "New Password must contain at least one special character (!@#$%^&*)."
       ),
-    pass2: z.string().nonempty("Password confirmation is required."),
+    newPass2: z.string().nonempty("Password confirmation is required."),
   })
-  .refine((data) => data.newPass === data.pass2, {
+  .refine((data) => data.newPass === data.newPass2, {
     message: "Passwords do not match.",
-    path: ["pass2"],
+    path: ["newPass2"],
   });

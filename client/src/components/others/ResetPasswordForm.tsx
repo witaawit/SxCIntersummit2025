@@ -1,17 +1,21 @@
 import useAuth from "@/hooks/Guest/useAuth";
-import type { email } from "node_modules/zod/dist/types/v4/core/regexes";
-import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import { resetPass } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import type { z } from "zod";
 export type FormFields = z.infer<typeof resetPass>;
 type ResetPasswordProps = {
   onSuccess: () => void;
   onCancel: () => void;
+  email: string;
 };
-const ResetPasswordForm = ({ onSuccess, onCancel }: ResetPasswordProps) => {
+const ResetPasswordForm = ({
+  email,
+  onSuccess,
+  onCancel,
+}: ResetPasswordProps) => {
   const { changePassword, changePasswordLoading } = useAuth();
   const {
     handleSubmit,
@@ -21,7 +25,21 @@ const ResetPasswordForm = ({ onSuccess, onCancel }: ResetPasswordProps) => {
     resolver: zodResolver(resetPass),
   });
 
-  const handleResetPass = async (data) => {};
+  const handleResetPass: SubmitHandler<FormFields> = async (data) => {
+    try {
+      const res = await changePassword({
+        oldPassword: data.newPass,
+        newPassword: data.newPass2,
+      });
+      if (res.status === 200) {
+        toast.success("Password changed successfully");
+        onSuccess();
+      }
+    } catch (e) {
+      toast.error("Error changing password:");
+      // Handle error appropriately, e.g., show a toast notification
+    }
+  };
 
   return (
     <div className="relative bg-white rounded-xl p-6 sm:p-8 shadow-lg">
@@ -29,7 +47,7 @@ const ResetPasswordForm = ({ onSuccess, onCancel }: ResetPasswordProps) => {
         <button
           type="button"
           className="w-10 h-10 bg-white rounded-full hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center"
-          onClick={oncancel}
+          onClick={() => onCancel()}
         >
           <img
             className="w-6 h-[15px]"
@@ -99,17 +117,17 @@ const ResetPasswordForm = ({ onSuccess, onCancel }: ResetPasswordProps) => {
             <input
               id="confirm-password"
               type="password"
-              {...register("pass2")}
+              {...register("newPass2")}
               placeholder="Confirm new password"
               className="w-full [font-family:'Inter-Regular',Helvetica] text-black text-base tracking-[-0.18px] bg-transparent border-none outline-none placeholder:text-[#c7c7c7] placeholder:italic"
               required
             />
             <p
               className={`${
-                errors.pass2 ? "text-red-600" : "text-transparent"
+                errors.newPass2 ? "text-red-600" : "text-transparent"
               }`}
             >
-              {errors.pass2?.message || "a"}
+              {errors.newPass2?.message || "a"}
             </p>
           </div>
         </div>
