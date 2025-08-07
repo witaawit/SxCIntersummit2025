@@ -42,6 +42,16 @@ const authorizeAccess = ({ roles = [], divisions = [] }) => {
   };
 };
 
+const authorizeInstitution = (...allowedInstitutions) => {
+  return (req, res, next) => {
+    if (!req.user || !allowedInstitutions.includes(req.user.institution)) {
+      return res.status(403).json({ message: "Forbidden: Institution not allowed" });
+    }
+    next();
+  };
+};
+
+
 const isAdmin = (req, res, next) => {
   if (req.user.role === "ADMIN" || req.user.role.endsWith("_ADMIN")) {
     return next();
@@ -62,5 +72,6 @@ module.exports = {
   authorizeAccess,
   isAdmin,
   isProjectOfficer,
+  authorizeInstitution
 };
      

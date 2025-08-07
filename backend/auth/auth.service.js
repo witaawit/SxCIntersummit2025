@@ -1,5 +1,8 @@
 const prisma = require('../config/db');
+const messages = require('../constants/messages');
 const verif = prisma.PendingUserVerification;
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const { sendEmail } = require("../utils/SendEmail");
 
@@ -52,11 +55,52 @@ async function updateTempUser(email, data) {
 }
 
 async function updateUserPassword(email, hashedPassword) {
-  await prisma.user.update({
+  return await prisma.user.update({
     where: { email },
     data: { password: hashedPassword },
   });
 };
 
-module.exports = { findUserByEmail, createTempUser, createUser, findTempEmail, 
-  sendOtpEmail, incrementAttempt, deleteTempUser, updateTempUser, findStaffByEmail, updateUserPassword };
+async function verifyReferralCode(code) {
+  const referralCode = await prisma.referral.findUnique({ where: { code } });
+  if (!referralCode) {
+    return { valid: false, message: messages.INVALID_REFERRAL };
+  }
+  return { valid: true, data: referralCode };
+}
+
+async function findReferralByCode(code) {
+  const referral= await prisma.referral.findUnique({ where: { code } });
+  return referral;
+}
+
+async function addTokenToBlacklist(token) {
+  try {
+    // Decoding token tanpa verifikasi untuk ambil expiry
+    const decoded = jwt.decode(token);
+    if (!decoded || !decoded.exp) {
+      throw new Error('Invalid token: cannot find exp claim');
+    }
+    const existToken = await prisma.blacklist.findUnique({
+      where: { token },
+    });
+    if (existToken) {
+      return { success: false, message: 'Token already blacklisted' };
+    }
+    // Convert exp (Unix timestamp) ke Date object
+    const expiresAt = new Date(Date.now() + 60 * 1000);
+
+    await prisma.blacklist.create({
+      data: {
+        token,
+        expiresAt,
+      }
+    });
+  } catch (error) {
+    console.error('Failed to add token to blacklist:', error);
+  }
+}
+
+
+module.exports = { findUserByEmail, createTempUser, createUser, findTempEmail,
+  sendOtpEmail, incrementAttempt, deleteTempUser, updateTempUser, findStaffByEmail, updateUserPassword, verifyReferralCode, findReferralByCode, addTokenToBlacklist };

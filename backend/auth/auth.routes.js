@@ -34,6 +34,10 @@ router.post('/sendnewOTP', [
   body('email').isEmail().withMessage('Invalid email')
 ], validate, authController.sendNewOtp);
 
+router.post('/logout', [
+  authenticate
+], authController.logout);
+
 router.get('/me',[
   authenticate
 ], authController.getTokenData);

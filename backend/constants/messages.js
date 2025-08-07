@@ -12,6 +12,8 @@ module.exports = {
   PASSWORD_NO_SPECIAL_CHAR: 'Password harus mengandung karakter khusus',
   PASSWORD_INVALID: 'Password tidak valid',
 
+  INVALID_REFERRAL: 'Kode referral tidak valid',
+
   TOKEN_NOT_FOUND: 'Token tidak ditemukan',
   INVALID_TOKEN: 'Token tidak valid',
   TOKEN_EXPIRED: 'Token sudah kedaluwarsa',
