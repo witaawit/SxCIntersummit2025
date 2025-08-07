@@ -9,11 +9,13 @@ import Landing from "./main/Landing";
 import AppLayout from "@/layout/AppLayout";
 import RoleLayout from "@/layout/RoleLayout";
 import { SignupPage } from "./main/SignUpPage";
+import UserProfilePage from "./user/UserProfilePage";
 import { AboutSection } from "./main/AboutSection";
 import Profile from "./main/Profile";
 import NotificationCard from "@/components/profile/NotificationCard";
-import UserProfilePage from "./user/UserProfilePage";
 import Unauthorized from "./main/Unauthorized";
+import ProgramLayout from "@/layout/ProgramLayout";
+import programRouter from "./program/programRouter";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -48,6 +50,12 @@ export const router = createBrowserRouter([
             element: <NotificationCard />, // <== Halaman Notifications
           },
         ],
+      },
+
+      {
+        path: "program",
+        element: <ProgramLayout />,
+        children: programRouter, // <== Nested program routes
       },
 
       // Other public routes that are based on role can be added here
