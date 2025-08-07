@@ -29,12 +29,12 @@ const Navbar = () => {
       className={`grid grid-cols-3 px-3 py-2 bg-gradient-to-r from-[#C6FF894D] bg-opacity-30 border border-[#abdc57] rounded-full shadow-[0_0_8px_#abdc57] w-full max-w-[90%] mx-auto mt-3 fixed left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md transition-all duration-300 ${isVisible ? "top-3" : "-top-20"}`}
     >
       <div className="flex items-center">
-        <img src="/images/logo-sxc-putih-2-2.png" alt="Logo" className="w-7 h-7" />
+        <img src="/images/logo-intersummit-3.png" alt="Logo" className="w-18 h-15" />
       </div>
 
       <div className="hidden md:flex justify-center items-center space-x-4">
-        <Link to="/" className="text-white hover:text-[#6A7337] text-xs font-medium">Home</Link>
-        <Link to="/about" className="text-white hover:text-[#6A7337] text-xs font-medium">About</Link>
+        <Link to="/" className="text-white hover:text-[#abdc57] text-xs font-medium">Home</Link>
+        <Link to="/about" className="text-white hover:text-[#abdc57] text-xs font-medium">About</Link>
         
         <div className="relative group">
           <Link to="/program/bmc" className="text-white hover:text-[#abdc57] text-xs font-medium flex items-center py-2">
