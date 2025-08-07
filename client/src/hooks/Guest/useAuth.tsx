@@ -68,22 +68,22 @@ const useAuth = () => {
       referalCode?: string;
       remember: boolean;
     }) => {
-      const res = await API.post("/auth/register", formData);
+      console.log(formData);
+
+      const res = await API.post("/auth/register", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
       return res.data;
     },
     onSuccess: async ({ data }) => {
-      toast.success("Login successful");
-      sessionStorage.setItem("token", data.token);
-      await refetch(); // fetch and set the user
-
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      toast.success("Registration successful");
     },
 
     onError: (e) => {
       if (axios.isAxiosError(e) && e.response) {
-        const errorMessage = e.response.data.message || "Login Gagal";
+        const errorMessage = e.response.data.message || "Register Failed";
         toast.error(errorMessage);
       } else {
         toast.error("Something went wrong, please try again later.");
@@ -123,19 +123,40 @@ const useAuth = () => {
     },
   });
 
-  const verifyOTP = useMutation({
-    mutationFn: async (formDetails: { email: string; otp: string }) => {
-      const res = await API.post("/auth/verify-otp", formDetails);
-      return res.data;
+  const requestNewOTP = useMutation({
+    mutationFn: async (email: string) => {
+      const res = await API.post("/auth/sendnewOTP", { email });
+      return res;
     },
     onSuccess: () => {
-      toast.success("OTP verified successfully");
-      navigate("/");
+      toast.success("OTP sent to your email");
     },
     onError: (e) => {
       if (axios.isAxiosError(e) && e.response) {
+        const errorMessage =
+          e.response.data.message || "Failed to send new OTP";
+        toast.error(errorMessage);
+      } else {
+        toast.error("Something went wrong, please try again later.");
+      }
+    },
+  });
+
+  const verifyOTP = useMutation({
+    mutationFn: async (formDetails: { email: string; otp: string }) => {
+      const res = await API.post("/auth/verifyOtp", formDetails);
+      return res;
+    },
+    onSuccess: () => {
+      toast.success("OTP verified successfully");
+    },
+    onError: (e, variables) => {
+      if (axios.isAxiosError(e) && e.response) {
         const errorMessage = e.response.data.message || "Failed to verify OTP";
         toast.error(errorMessage);
+        setTimeout(() => {
+          requestNewOTP.mutate(variables.email);
+        }, 1000);
       } else {
         toast.error("Something went wrong, please try again later.");
       }
@@ -162,9 +183,9 @@ const useAuth = () => {
   });
 
   useEffect(() => {
-    const token =
-      localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
+    // if remember me is enabled, use localStorage
     // if (token && loginTime) {
     //   const elapsedTime = Date.now() - parseInt(loginTime, 10);
     //   const oneDay = 24 * 60 * 60 * 1000;
@@ -187,6 +208,19 @@ const useAuth = () => {
     //     }
     //   }
     // }
+
+    if (token) {
+      refetch();
+      if (
+        location.pathname.includes("/register") ||
+        location.pathname.includes("/login")
+      ) {
+        toast.success("Login successful!");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    }
   }, []);
 
   return {
@@ -196,6 +230,8 @@ const useAuth = () => {
     registerLoading: registerMutation.isPending,
     requestResetPassword: requestResetPassword.mutateAsync,
     requestResetPasswordLoading: requestResetPassword.isPending,
+    requestNewOTP: requestNewOTP.mutateAsync,
+    requestNewOTPLoading: requestNewOTP.isPending,
     verifyOTP: verifyOTP.mutateAsync,
     verifyOTPLoading: verifyOTP.isPending,
     changePassword: passwordMutation.mutateAsync,

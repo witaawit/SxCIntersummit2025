@@ -33,6 +33,7 @@ type UpdateProfile = {
   schemaName: string;
   placeHolder: string;
   type: string;
+  options?: { label: string; value: string }[];
 };
 
 export const updateSMAStudentData: UpdateProfile[] = [
@@ -65,12 +66,25 @@ export const updateSMAStudentData: UpdateProfile[] = [
     schemaName: "educationStatus",
     placeHolder: "Select your education status...",
     type: "select",
+    options: [
+      {
+        label: "High School Student (SMA / SMK / Sederajat)",
+        value: "highSchool",
+      },
+      { label: "Year 11 (2nd year of High School)", value: "college" },
+      { label: "Year 12 (3rd year of High School)", value: "university" },
+    ],
   },
   {
     columnName: "Grade",
     schemaName: "grade",
     placeHolder: "Select your grade...",
     type: "select",
+    options: [
+      { label: "Year 10 (1st year of High School)", value: "highSchool" },
+      { label: "Year 11 (2nd year of High School)", value: "college" },
+      { label: "Year 12 (3rd year of High School)", value: "university" },
+    ],
   },
   {
     columnName: "School Name",

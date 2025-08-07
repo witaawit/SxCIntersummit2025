@@ -40,8 +40,13 @@ const UserProfilePage = () => {
                 <input
                   type={i.type}
                   id={i.schemaName}
-                  className="mt-1 block w-full rounded-full border border-gray-300 text-black font-bold bg-gray-100 py-2 pl-4  focus:border-[#8257A9] focus:ring-[#8257A9] outline-none "
+                  className={`mt-1 block w-full rounded-full border border-gray-300 text-black font-bold bg-gray-100 py-2 pl-4  focus:border-[#8257A9] focus:ring-[#8257A9] outline-none ${
+                    !isEditing
+                      ? "cursor-not-allowed opacity-70"
+                      : "cursor-pointer"
+                  }`}
                   placeholder={i.placeHolder}
+                  disabled={!isEditing}
                 />
               </React.Fragment>
             ))}

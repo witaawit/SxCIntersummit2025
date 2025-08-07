@@ -1,4 +1,5 @@
 import useAuth from "@/hooks/Guest/useAuth";
+import { useUserStore } from "@/store/userStore";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,6 +7,7 @@ function Sidebar({ isOpen = true, className = "" }) {
   const navigate = useNavigate();
 
   const { logout } = useAuth();
+  const { user } = useUserStore();
 
   const goToHomePage = () => {
     navigate("/");
@@ -19,7 +21,7 @@ function Sidebar({ isOpen = true, className = "" }) {
 
   // Define goToEventsPage function
   const goToEventsPage = () => {
-    navigate("/events"); // Ganti dengan path yang sesuai untuk halaman Events
+    navigate("/profile/events"); // Ganti dengan path yang sesuai untuk halaman Events
   };
 
   return (
@@ -30,7 +32,7 @@ function Sidebar({ isOpen = true, className = "" }) {
     >
       {/* User Profile - lebih kompak */}
       <div className="mb-6">
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center space-x-2 max-w-full">
           <div className="w-8 h-8 bg-purple-300/80 rounded-full flex items-center justify-center">
             <img
               src="/images/profile/profile-icon.svg"
@@ -38,13 +40,14 @@ function Sidebar({ isOpen = true, className = "" }) {
               className="w-4 h-4"
             />
           </div>
-          <div>
-            <h3 className="text-white text-sm font-medium">Your Name</h3>
-            <p className="text-white/60 text-xs">you@gmail.com</p>
+          <div className="min-w-0">
+            <h3 className="text-white text-sm font-medium truncate">
+              {user.name}
+            </h3>
+            <p className="text-white/60 text-[10px]">{user.email}</p>
           </div>
         </div>
       </div>
-
       {/* Main Menu - lebih rapat */}
       <div className="mb-4">
         <h4 className="text-white/60 text-xs font-medium mb-2 tracking-wider">
@@ -55,7 +58,7 @@ function Sidebar({ isOpen = true, className = "" }) {
             {
               icon: "home-icon.svg",
               label: "Home",
-              action: goToHomePage,
+              action: goToProfilePage,
             },
             {
               icon: "mini-profile.svg",
@@ -96,7 +99,6 @@ function Sidebar({ isOpen = true, className = "" }) {
           ))}
         </nav>
       </div>
-
       {/* Action Buttons - lebih kecil */}
       <div className="space-y-1.5 mt-6">
         <button

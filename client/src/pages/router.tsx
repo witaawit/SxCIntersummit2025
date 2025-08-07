@@ -13,6 +13,7 @@ import { AboutSection } from "./main/AboutSection";
 import Profile from "./main/Profile";
 import NotificationCard from "@/components/profile/NotificationCard";
 import UserProfilePage from "./user/UserProfilePage";
+import Unauthorized from "./main/Unauthorized";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
         element: <Profile />,
         children: [
           {
+            path: "home",
+            element: <UserProfilePage />, // <== Halaman Notifications
+          },
+          {
             index: true,
             element: <UserProfilePage />, // <== Halaman Notifications
           },
@@ -53,5 +58,9 @@ export const router = createBrowserRouter([
         children: roleRoutes, // <== Nest admin routes
       },
     ],
+  },
+  {
+    path: "unauthorized",
+    element: <Unauthorized />,
   },
 ]);

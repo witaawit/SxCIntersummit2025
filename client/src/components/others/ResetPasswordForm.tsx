@@ -5,13 +5,20 @@ import toast from "react-hot-toast";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import { resetPass } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import type { FormMethod } from "react-router-dom";
+import type { z } from "zod";
 export type FormFields = z.infer<typeof resetPass>;
 type ResetPasswordProps = {
   onSuccess: () => void;
   onCancel: () => void;
+  email: string;
 };
-const ResetPasswordForm = ({ onSuccess, onCancel }: ResetPasswordProps) => {
+const ResetPasswordForm = ({
+  email,
+  onSuccess,
+  onCancel,
+}: ResetPasswordProps) => {
   const { changePassword, changePasswordLoading } = useAuth();
   const {
     handleSubmit,
@@ -21,7 +28,18 @@ const ResetPasswordForm = ({ onSuccess, onCancel }: ResetPasswordProps) => {
     resolver: zodResolver(resetPass),
   });
 
-  const handleResetPass = async (data) => {};
+  const handleResetPass: SubmitHandler<FormFields> = async (data) => {
+    try {
+      const res = await changePassword(data);
+      if (res.status === 200) {
+        toast.success("Password changed successfully");
+        onSuccess();
+      }
+    } catch (e) {
+      toast.error("Error changing password:");
+      // Handle error appropriately, e.g., show a toast notification
+    }
+  };
 
   return (
     <div className="relative bg-white rounded-xl p-6 sm:p-8 shadow-lg">
@@ -29,7 +47,7 @@ const ResetPasswordForm = ({ onSuccess, onCancel }: ResetPasswordProps) => {
         <button
           type="button"
           className="w-10 h-10 bg-white rounded-full hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center"
-          onClick={oncancel}
+          onClick={() => onCancel()}
         >
           <img
             className="w-6 h-[15px]"

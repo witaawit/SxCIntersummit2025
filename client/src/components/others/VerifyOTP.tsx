@@ -10,7 +10,8 @@ type VerifyOTPProps = {
 };
 
 const VerifyOTP = ({ onSuccess, onCancel, email }: VerifyOTPProps) => {
-  const { requestResetPassword, verifyOTP, verifyOTPLoading } = useAuth();
+  const { requestNewOTP, requestNewOTPLoading, verifyOTP, verifyOTPLoading } =
+    useAuth();
 
   const [resetCode, setResetCode] = useState<string>("");
 
@@ -23,8 +24,7 @@ const VerifyOTP = ({ onSuccess, onCancel, email }: VerifyOTPProps) => {
     return () => clearInterval(interval);
   }, [secondsLeft]);
 
-  const handleVerifyCode = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleVerifyCode = async () => {
     try {
       const res = await verifyOTP({ email: email, otp: resetCode });
       if (res.status === 200) {
@@ -98,7 +98,7 @@ const VerifyOTP = ({ onSuccess, onCancel, email }: VerifyOTPProps) => {
               }`}
               disabled={secondsLeft > 0}
               onClick={async () => {
-                const res = await requestResetPassword(email);
+                const res = await requestNewOTP(email);
 
                 if (res.status === 200) {
                   setSecondsLeft(60);
@@ -114,6 +114,7 @@ const VerifyOTP = ({ onSuccess, onCancel, email }: VerifyOTPProps) => {
         {/* Buttons - Consistent with Email Form */}
         <div className="flex flex-col items-center gap-4 w-full">
           <button
+            onClick={() => handleVerifyCode()}
             type="submit"
             className="flex w-[343px] justify-center py-4 bg-[#8257a9] rounded-2xl hover:bg-[#6d4a8f] transition-colors duration-200"
           >

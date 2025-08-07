@@ -18,7 +18,6 @@ const Navbar = () => {
   if (["/login", "/signup", "/dashboard"].includes(location.pathname)) {
     return null;
   }
-  console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
