@@ -35,7 +35,8 @@ function Sidebar({ isOpen = true, className = "" }) {
   };
 
   return (
-    <aside
+    <div className="hidden lg:block">
+    <div
       className={`w-56 bg-white/10 rounded-xl backdrop-blur-sm border-r border-white/20 p-4 min-h-[80vh] my-4 ml-4 transition-all duration-300 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0 ${className}`}
@@ -78,7 +79,6 @@ function Sidebar({ isOpen = true, className = "" }) {
             {
               icon: "bell-icon.svg",
               label: "Notifications",
-              active: true,
               action: () => navigate("/profile/notifications"),
             },
             {
@@ -109,7 +109,6 @@ function Sidebar({ isOpen = true, className = "" }) {
           ))}
         </nav>
       </div>
-      {/* Action Buttons - lebih kecil */}
       <div className="space-y-1.5 mt-6">
         <button
           onClick={goToHomePage}
@@ -134,7 +133,43 @@ function Sidebar({ isOpen = true, className = "" }) {
           Logout
         </button>
       </div>
-    </aside>
+    </div>
+    
+      {/* Display images only for /profile/bmc route */}
+     {/* Display timeline for /profile/bmc and /profile/bmc/individual only */}
+{(location.pathname === "/profile/bmc/team" || location.pathname === "/profile/bmc/individual") && (
+  <>
+      <h2 className="text-white text-xl font-semibold mt-6 ml-10">Need help or have any questions? <br/> Reach us!</h2>
+        <div className="w-56  p-4 border border-white/20 rounded-[19.6px] bg-[#8257A9] text-white mx-auto ml-10">
+          <div className="flex flex-col items-center justify-center">
+            <img 
+              src="/images/profile/BMC/profile.png" 
+              alt="BMC Icon"
+              className="w-5 h-5 mb-2"  // Adds some space between the image and the text
+            />
+            <p className="text-sm font-medium">Annisa Fauziyah</p>
+            <p className="text-sm mt-2">087845099825 (WA)</p>
+          </div>
+        </div>
+    <h2 className="flex mt-2 justify-center items-center">
+      <img 
+        src="/images/profile/BMC/wa-group.png" // Ganti dengan gambar yang sesuai
+        alt="Icon"
+        className="w-40 h-40 object-contain"
+      />
+    </h2>
+    <h2 className="flex justify-center items-center">
+      <img 
+        src="/images/profile/BMC/bmc-timeline.png" // Ganti dengan gambar yang sesuai
+        alt="Icon"
+        className="w-150 h-150 object-contain"
+      />
+    </h2>
+  </>
+)}
+    </div>
+
+
   );
 }
 

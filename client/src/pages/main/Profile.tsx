@@ -7,22 +7,24 @@ const Profile = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  {/*useEffect(() => {
     if (user === null) {
       navigate("/unauthorized");
     }
-  }, [user, navigate]);
+  }, [user, navigate]);*/}
   return (
-    <div className="bg-transparent flex w-full  ">
-      <div className="pt-20 bg-[linear-gradient(180deg,rgba(86,39,128,1)_0%,rgba(100,61,135,1)_48%,rgba(130,87,169,1)_100%)] w-full  flex">
-        {/* Sidebar */}
+    <div className="bg-transparent flex w-full min-h-screen overflow-hidden ">
+      <div className=" bg-[linear-gradient(180deg,rgba(86,39,128,1)_0%,rgba(100,61,135,1)_48%,rgba(130,87,169,1)_100%)] w-full ">
+        {/* Sidebar 
         <div className="w-64 p-6 max-md:hidden">
           <SideBarSection />
-        </div>
+        </div>*/}
 
         {/* Notification Card */}
-        <div className="flex-1 bg-transparent p-6">
-          <Outlet />
+
+
+        <div className="bg-transparent p-6">
+          <Outlet />/
         </div>
       </div>
     </div>

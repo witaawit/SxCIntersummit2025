@@ -1,9 +1,16 @@
 import { Megaphone } from "lucide-react";
 import React from "react";
+import SideBarSection from "@/components/profile/SideBarSection"; 
 
 const ProfileHome = () => {
   return (
-    <div className="mx-auto px-6 py-6">
+        <div className="flex w-full mt-17">
+      {/* Sidebar */}
+      <div className="w-1/4">
+        <SideBarSection /> {/* Sidebar positioned on the left */}
+      </div>
+    <div className="flex-1 mx-auto px-20 py-6">
+      
       {" "}
       <img src="/images/profile/bmc.png" alt="" />
       {/* Announcement */}
@@ -89,6 +96,7 @@ const ProfileHome = () => {
             </button>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );

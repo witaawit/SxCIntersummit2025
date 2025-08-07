@@ -18,6 +18,9 @@ import ProgramLayout from "@/layout/ProgramLayout";
 import programRouter from "./program/programRouter";
 import ProfileHome from "./user/ProfileHome";
 import AllPrograms from "./program/Program";
+import BMCTeam from "@/components/profile/BMCTeam";
+import BMCIndividual from "@/components/profile/BMCIndividual";
+import BMCRegister from "@/components/profile/BMCRegister";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -45,16 +48,28 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "home",
-            element: <ProfileHome />, // <== Halaman Notifications
+            element: <ProfileHome />,
           },
           {
             index: true,
-            element: <UserProfilePage />, // <== Halaman Notifications
+            element: <UserProfilePage />,
           },
           {
             path: "notifications",
-            element: <NotificationCard />, // <== Halaman Notifications
+            element: <NotificationCard />, 
           },
+          {
+            path: "bmc/team",
+            element: <BMCTeam />,
+          },
+          {
+            path: "bmc/individual",
+            element: <BMCIndividual />, // <== Halaman detail BMC, bisa di
+          },
+          {
+            path: "home/bmc/register",
+            element: <BMCRegister />, // <== Halaman untuk memilih individu BMC
+          }
         ],
       },
 
