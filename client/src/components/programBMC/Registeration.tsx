@@ -11,7 +11,7 @@ interface TimeLeft {
 }
 
 const Registration: React.FC = () => {
-  const targetDate = new Date('August 28, 2025 23:59:59');
+  const targetDate = new Date('August 25, 2025 23:59:59');
 
   const calculateTimeLeft = (): TimeLeft => {
     const diff = +targetDate - +new Date();
