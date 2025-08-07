@@ -55,7 +55,7 @@ const Navbar = () => {
 
         <div className="relative group">
           <Link
-            to="/program/bmc"
+            to="/program"
             className="text-white hover:text-[#abdc57] text-xs font-medium flex items-center py-2"
           >
             Program <span className="ml-1 text-xs">▾</span>

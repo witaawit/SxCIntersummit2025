@@ -17,6 +17,7 @@ import Unauthorized from "./main/Unauthorized";
 import ProgramLayout from "@/layout/ProgramLayout";
 import programRouter from "./program/programRouter";
 import ProfileHome from "./user/ProfileHome";
+import AllPrograms from "./program/Program";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "about",
         element: <AboutSection />,
+      },
+      {
+        path: "programs", 
+        element: <AllPrograms />,
       },
       {
         path: "profile",
