@@ -60,34 +60,34 @@ const Navbar = () => {
           >
             Program <span className="ml-1 text-xs">▾</span>
           </Link>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 bg-black/70 border border-[#abdc57] rounded-lg shadow-lg w-40 z-50 hidden group-hover:block">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 bg-black/70 border border-[#abdc57] rounded-lg shadow-lg w-50 z-50 hidden group-hover:block transition duration-500">
             <div className="py-1">
               <Link
                 to="/program/bmc"
                 className="block px-4 py-2 text-sm text-white hover:bg-[#42582b]"
               >
-                1. Program BMC
+                Business Model Canvas
               </Link>
               <Link
                 to="/program/bcl"
                 className="block px-4 py-2 text-sm text-white hover:bg-[#42582b]"
               >
-                2. Program BCL
+                Business Competition Launchpad
               </Link>
               <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
-                3. Soon
+                International Business Case Competition
               </span>
               <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
-                4. Soon
+                International Business Plan Competition
               </span>
               <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
-                5. Soon
+                Chambers
               </span>
               <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
-                6. Soon
+                Company Visit
               </span>
               <span className="block px-4 py-2 text-sm text-white/50 cursor-not-allowed">
-                7. Soon
+                International Conference
               </span>
             </div>
           </div>
