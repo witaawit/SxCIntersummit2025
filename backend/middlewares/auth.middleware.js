@@ -40,4 +40,51 @@ async function authenticate(req, res, next) {
   }
 }
 
-module.exports = { authenticate };
+async function verifyProfile (req, res,next){
+  try{
+    const user = req.user.id;
+    const existUser = await prisma.user.findUnique({ 
+      where: {id: user},
+      select: {
+        name: true,
+        email: true,
+        birthdate: true,
+        domicile: true,
+        institution: true,
+        institution_name: true,
+        major: true,
+        wa_number: true,
+        line_id: true,
+        insta_acc: true,
+        Submission: {
+          where:{type: "IDCARD"},
+          select:{
+            Files:{
+              select:{
+                filePath: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if(!existUser){
+      res.status(404).json({message: 'user not found'});
+    }
+    
+    const allGood = Object.values(existUser).every(value => value !== null && value !== undefined);
+
+    if (!allGood) {
+      return res.status(400).json({ message: 'User profile not complete' });
+    }
+
+    // Jika semua lengkap, lanjutkan ke middleware berikutnya
+    next();
+  }catch (error){
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  };
+}
+
+module.exports = { authenticate, verifyProfile };

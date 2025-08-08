@@ -1,3 +1,4 @@
+const { join } = require('path');
 const prisma = require('../../config/db');
 const crypto = require('crypto');
 
@@ -112,6 +113,27 @@ async function getTeamMembers(userId) {
   return members;
 }
 
+async function joinIndvidual(data){
+  return await prisma.tempIndividu.create({data})
+}
+
+async function getAnnouncement(userId){
+  return await prisma.notification.findMany({
+    where:{
+      userId: userId,
+      purpose: "ANNOUNCEMENT"
+    },
+    select:{
+      title: true,
+      message: true
+    }
+  })
+}
+
+async function alreadyRead(data){
+  
+}
+
 module.exports = {
     generateTeamCode,
     isCodeUnique,
@@ -122,6 +144,9 @@ module.exports = {
     findProgramByName,
     teamLimitCheck,
     joinTeam,
-    findTeamByCode, createTeam, 
-    getTeamMembers
+    findTeamByCode, 
+    createTeam, 
+    getTeamMembers,
+    joinIndvidual,
+    getAnnouncement
 };

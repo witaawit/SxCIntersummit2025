@@ -24,14 +24,6 @@ const authorizeDivisions = (...allowedDivisions) => {
   };
 };
 
-const authorizeInstitution = (...allowedInstitutions) => {
-  return (req, res, next) => {
-    if (!req.user || !allowedInstitutions.includes(req.user.institution)) {
-      return res.status(403).json({ message: "Forbidden: Institution not allowed" });
-    }
-    next();
-  };
-};
 
 const authorizeAccess = ({ roles = [], divisions = [], institutions = [] }) => {
   return (req, res, next) => {

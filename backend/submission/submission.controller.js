@@ -1,41 +1,62 @@
-const prisma = require('../config/db');
-const MSG = require('../constants/messages');
+const submissionService = require('./submission.service');
 
-exports.upload = async (req, res) => {
+async function submitFile(req, res) {
   try {
+    const programId = req.programId || null;
+    const teamId = req.teamId || null;
+    const seminarId = req.seminarId || null;
+    const type = req.type || req.body.type;
+    const event = req.event
+    const userId = req.user.id
+    const stage = req.body.stage
+    
     const file = req.file;
-    const registrationId = parseInt(req.body.registrationId);
-
-    if (!file || !registrationId) {
-      return res.status(400).json({ success: false, message: MSG.VALIDATION_ERROR });
+    if (!file) {
+      return res.status(400).json({ message: 'File is required' });
     }
 
-    const fileName = `bmc/${Date.now()}-${file.originalname}`;
-    const { error: uploadError } = await supabase.storage
-      .from('submissions')
-      .upload(fileName, file.buffer, { upsert: true });
-
-    if (uploadError) {
-      return res.status(500).json({ success: false, message: MSG.SUBMIT_FAILED, error: uploadError });
-    }
-
-    const fileUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/submissions/${fileName}`;
-
-    const submission = await prisma.submission.create({
+    const submission = await submissionService.createSubmission({
       data: {
-        registrationId,
-        fileUrl,
-        uploadedAt: new Date()
+      seminarId,
+      teamId,
+      programId,
+      userId,
+      stage,
+      event,
+      type,
+      file, 
       }
     });
 
     return res.status(201).json({
-      success: true,
-      message: MSG.SUBMIT_SUCCESS,
-      data: submission
+      message: 'Submission created successfully',
+      data: submission,
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, message: MSG.INTERNAL_ERROR });
+  } catch (error) {
+    console.error('Error creating submission:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
+}
+
+async function listSubmissionsByEvent(req, res) {
+  try {
+    const { event } = req.params;
+
+    const allowedEvents = ['BMC', 'BCL', 'IBCC', 'IBPC', 'CHAMBERS', 'COMPANY_VISIT', 'IC'];
+
+    if (!allowedEvents.includes(event)) {
+      return res.status(400).json({ message: 'Invalid event' });
+    }
+
+    const submissions = await submissionService.getSubmissionsByEvent(event);
+    return res.json(submissions);
+  } catch (error) {
+    console.error('Error retrieving submissions:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+module.exports = {
+  submitFile,
+  listSubmissionsByEvent,
 };

@@ -56,7 +56,6 @@ async function updateTempUser(email, data) {
 
 async function updateUserPassword(email, hashedPassword) {
   return await prisma.user.update({
-  return await prisma.user.update({
     where: { email },
     data: { password: hashedPassword },
   });

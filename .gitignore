@@ -33,3 +33,4 @@ build/
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+./config/testsxc25-f263eaeb76b0.json

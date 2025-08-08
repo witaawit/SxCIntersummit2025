@@ -17,6 +17,7 @@ const generateOTP = () => {
 
 // untuk register 
 exports.register = async (req, res) => {
+  try{
   const { name, email, password, referral } = req.body;
   const existingUser = await findUserByEmail(email);
   const existingStaff = await findStaffByEmail(email);
@@ -68,10 +69,11 @@ exports.login = async (req, res) => {
   const valid = await comparePassword(password, user?.password || staff?.password);
   if (!valid) return res.status(401).json({ message: MSG.INVALID_PASSWORD });
 
-  let id, role, accountType, division = null;
+  let id, role, accountType, division, institution = null;
   if (staff) {
     ({ id, role, division } = staff);
     accountType = 'staff';
+    institution = null;
   }else {
    ({ id, role, institution } = user);
     accountType = 'user';
@@ -87,54 +89,56 @@ exports.login = async (req, res) => {
 };
 
 exports.verifyOTP = async (req, res) => {
-  const { email, otp } = req.body;
-  const tempUser = await findTempEmail(email);
+  try{
+    const { email, otp } = req.body;
+    const tempUser = await findTempEmail(email);
 
-  if (!tempUser) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
+    if (!tempUser) return res.status(404).json({ message: MSG.EMAIL_NOT_FOUND });
 
-  if (tempUser.otp !== otp) {
-    await incrementAttempt(email);
+    if (tempUser.otp !== otp) {
+      await incrementAttempt(email);
 
-    if (tempUser.otpTries + 1 >= 3) {
-      await deleteTempUser(email);
-      return res.status(400).json({ message: 'OTP salah 3 kali. Data registrasi dihapus.' });
+      if (tempUser.otpTries + 1 >= 3) {
+        await deleteTempUser(email);
+        return res.status(400).json({ message: 'OTP salah 3 kali. Data registrasi dihapus.' });
+      }
+
+      return res.status(400).json({
+        message: MSG.OTP_INVALID,
+        attemptsLeft: 3 - (tempUser.otpTries + 1)
+      });
     }
 
-    return res.status(400).json({
-      message: MSG.OTP_INVALID,
-      attemptsLeft: 3 - (tempUser.otpTries + 1)
-    });
-  }
+    const otpAge = Date.now() - new Date(tempUser.otpSentAt).getTime();
+    if (otpAge > 1 * 60 * 1000) { // 1 menit
+      return res.status(400).json({ message: MSG.OTP_EXPIRED });
+    }
 
-  const otpAge = Date.now() - new Date(tempUser.otpSentAt).getTime();
-  if (otpAge > 1 * 60 * 1000) { // 1 menit
-    return res.status(400).json({ message: MSG.OTP_EXPIRED });
-  }
+    if (tempUser.purpose === 'register') { 
+      const user = await createUser({
+        name: tempUser.name,
+        email: tempUser.email,
+        password: tempUser.password,
+        referralId: tempUser.referral
+      });
 
-  if (tempUser.purpose === 'register') { 
-    const user = await createUser({
-      name: tempUser.name,
-      email: tempUser.email,
-      password: tempUser.password,
-      referralId: tempUser.referral
-    });
+      await deleteTempUser(email);
 
-    await deleteTempUser(email);
+      return res.status(200).json({
+        message: MSG.REGISTER_VERIFIED,
+        user: {
+          id: newUser.id,
+          email: newUser.email,
+          name: newUser.name
+        }
+      });
 
-    return res.status(200).json({
-      message: MSG.REGISTER_VERIFIED,
-      user: {
-        id: newUser.id,
-        email: newUser.email,
-        name: newUser.name
-      }
-    });
-
-  } catch (error) {
+    } 
+  }catch (error) {
     console.error('Verify OTP error:', error);
     return res.status(500).json({ message: 'An error occurred on the server' });
-  }
-};
+  };
+}
 
 exports.sendNewOtp = async (req, res) => {
   try {
@@ -153,6 +157,10 @@ exports.sendNewOtp = async (req, res) => {
     }
 
   res.status(200).json({ message: "OTP baru telah dikirim ke email Anda" });
+  }catch{
+    console.error('Send New OTP:', error);
+    return res.status(500).json({ message: 'An error occurred on the server' });
+  }
 };
 
 exports.logout = async (req, res) => {

@@ -8,6 +8,7 @@
     // Routes untuk IT, PO, BMC
     router.get('/users', authenticate, authorizeRoles(...AllAdminRoles), controller.getAllUsers);
     router.get('/staffs', authenticate, authorizeRoles(...AllAdminRoles), controller.getAllStaff);
-    router.use('/BMC', authenticate, authorizeRoles(StaffRole.BMC_ADMIN), require("../admin/bmc/bmcA.routes"));
-
+    router.use('/bmc', authenticate, authorizeRoles(StaffRole.BMC_ADMIN), require("./bmc/bmcA.routes"));
+    router.use('/po', authenticate, authorizeRoles(StaffRole.PO), require("./po/poA.routes"));
+    router.use('/it', authenticate, authorizeRoles(StaffRole.ADMIN), require("./IT/itA.routes") )
     module.exports = router;

@@ -1,7 +1,7 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
-const prisma = require('../prisma/db'); 
-const { staff_role } = require('@prisma/client');
+const prisma = require('../config/db'); 
+
 
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
@@ -18,6 +18,7 @@ passport.use(new GoogleStrategy({
       // Buat user baru
       user = await prisma.user.create({
         data: {
+          googleId: profile.id ,
           name: profile.displayName,
           email,
           password: 'google',         // placeholder

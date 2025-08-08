@@ -1,5 +1,6 @@
 const prisma = require('../../config/db');
-const { generateTeamCode, isCodeUnique, findProgramByName,checkLeader, findMember, findTeamByCode, teamLimitCheck, joinTeam, checkTeamName, createTeam, getTeamMembers} = require('./bmcU.service');
+const { generateTeamCode, isCodeUnique, findProgramByName,checkLeader, findMember, 
+  findTeamByCode, teamLimitCheck, joinTeam, checkTeamName, createTeam, getTeamMembers, joinIndvidual,getAnnouncement} = require('./bmcU.service');
 
 
 exports.createTeam = async (req, res) => {
@@ -67,6 +68,25 @@ exports.createTeam = async (req, res) => {
   }
 };
 
+exports.individual = async (req, res) => {
+  try{
+    const user = req.user.id
+
+    const checkUser = await checkLeader (user)
+    if (checkUser === true){
+      return res.status(400).json({ message: 'Already in team' })
+    }
+
+    await joinIndvidual ({userId : user})
+    return res.status(201).json({
+      message: 'User join as Incividu successfully'
+    });
+  }catch (error){
+    console.error('Join as Individu:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+}
+
 exports.joinTeam = async (req, res) => {
     try{
         const userId = req.user.id; // Ambil ID user dari token yang sudah di-verify
@@ -106,6 +126,25 @@ exports.teamMembers = async(req, res) => {
     } catch(error) {
         console.error('Get all Member error:', error);
         return res.status(500).json({ message: 'Server error' });
-    }
+    } 
     
 }
+
+exports.announcement = async(req, res)=> {
+  try{
+    const userId = req.user.id
+    const userAnnouncement = await getAnnouncement(userId);
+    if (!userAnnouncement){
+      return res.status(404).json({ message: 'Announcement not found' });
+    }
+    return res.json(userAnnouncement);
+
+  }catch(err){
+    console.error('Get Announcement:', err);
+    return res.status(500).json({ message: 'Server error' });
+
+  }
+}
+
+
+

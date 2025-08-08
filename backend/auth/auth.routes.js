@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../auth/auth.controller');
+const google = require('../config/passport')
 const { body } = require('express-validator');
 const validate = require('../middlewares/validation.middleware');
 const { authenticate } = require('../middlewares/auth.middleware');
@@ -32,6 +33,16 @@ router.post('/sendnewOTP', [
 router.post('/logout', [
   authenticate
 ], authController.logout);
+
+router.get('/google', google.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/google/callback', 
+  google.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    // login sukses, redirect ke halaman yang diinginkan
+    res.redirect('/dashboard');
+  }
+);
 
 router.get('/me',[
   authenticate
