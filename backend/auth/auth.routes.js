@@ -6,14 +6,14 @@ const { body } = require('express-validator');
 const validate = require('../middlewares/validation.middleware');
 const { authenticate } = require('../middlewares/auth.middleware');
 
-// Register
+// untuk register 
 router.post('/register', [
   body('name').notEmpty().withMessage('Name must be filled in'),
   body('email').isEmail().withMessage('Invalid Email'),
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
 ], validate, authController.register);
 
-// Login
+// untuk login
 router.post('/login', [
   body('email').isEmail().withMessage('Invalid email'),
   body('password').notEmpty().withMessage('Password must be filled in')

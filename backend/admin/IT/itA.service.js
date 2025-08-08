@@ -1,6 +1,5 @@
 const prisma = require('../../config/db');
 
-// === STAFF ===
 exports.createStaff = async (data) => {
   return await prisma.staff.create({ data });
 };
@@ -22,7 +21,6 @@ exports.deleteStaff = async (id) => {
   });
 };
 
-// === REFERRAL ===
 exports.createReferral = async (data) => {
   return await prisma.referral.create({ data });
 };

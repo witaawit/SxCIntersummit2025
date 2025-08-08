@@ -1,4 +1,3 @@
-// ini controller untuk autentikasi (login, register, verifikasi OTP, dan forgot-password)
 const { findUserByEmail, createUser, createTempUser, findTempEmail, sendOtpEmail, incrementAttempt, deleteTempUser, updateTempUser, findStaffByEmail, updateUserPassword, verifyReferralCode, findReferralByCode, addTokenToBlacklist } = require("./auth.service");
 const { hashPassword, comparePassword } = require("../utils/hash");
 const {validatePassword} = require("../utils/password")
@@ -15,7 +14,6 @@ const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }; // Generates a 6-digit OTP
 
-// untuk register 
 exports.register = async (req, res) => {
   try{
   const { name, email, password, referral } = req.body;
@@ -180,7 +178,6 @@ exports.logout = async (req, res) => {
 
 // testing jwt token di postman untuk cek id dan role
 exports.getTokenData = (req, res) => {
-  // req.user diisi dari middleware setelah verifikasi JWT
   const { id, role, accountType, division, institution } = req.user;
 
   res.status(200).json({
